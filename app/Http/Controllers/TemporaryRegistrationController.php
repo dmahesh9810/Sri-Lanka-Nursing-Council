@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class TemporaryRegistrationController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $query = \App\Models\TemporaryRegistration::with('nurse');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('nurse', function ($q) use ($search) {
+                $q->where('nic', 'like', '%' . $search . '%');
+            })->orWhere('temp_registration_no', 'like', '%' . $search . '%');
+        }
+
+        $registrations = $query->latest()->paginate(10)->withQueryString();
+
+        return view('temporary_registrations.index', compact('registrations'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+        $nurse = null;
+
+        if ($request->filled('nic')) {
+            $nurse = \App\Models\Nurse::where('nic', $request->nic)->first();
+
+            if (!$nurse) {
+                return back()->with('error', 'Nurse not found. Please register nurse first.');
+            }
+
+            if (\App\Models\TemporaryRegistration::where('nurse_id', $nurse->id)->exists()) {
+                return back()->with('error', 'Nurse already has a temporary registration.');
+            }
+        }
+
+        return view('temporary_registrations.create', compact('nurse'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nurse_id' => 'required|exists:nurses,id|unique:temporary_registrations,nurse_id',
+            'temp_registration_no' => 'required|string|max:255',
+            'temp_registration_date' => 'required|date',
+        ]);
+
+        \App\Models\TemporaryRegistration::create($validated);
+
+        return redirect()->route('temporary-registrations.index')->with('success', 'Temporary Registration created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(\App\Models\TemporaryRegistration $temporaryRegistration)
+    {
+        $temporaryRegistration->load('nurse');
+        return view('temporary_registrations.show', compact('temporaryRegistration'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(\App\Models\TemporaryRegistration $temporaryRegistration)
+    {
+        $temporaryRegistration->load('nurse');
+        return view('temporary_registrations.edit', compact('temporaryRegistration'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, \App\Models\TemporaryRegistration $temporaryRegistration)
+    {
+        $validated = $request->validate([
+            'temp_registration_no' => 'required|string|max:255',
+            'temp_registration_date' => 'required|date',
+            'nurse_id' => [
+                'required',
+                'exists:nurses,id',
+                \Illuminate\Validation\Rule::unique('temporary_registrations')->ignore($temporaryRegistration->id)
+            ],
+        ]);
+
+        $temporaryRegistration->update($validated);
+
+        return redirect()->route('temporary-registrations.show', $temporaryRegistration)->with('success', 'Registration updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(\App\Models\TemporaryRegistration $temporaryRegistration)
+    {
+        $temporaryRegistration->delete();
+
+        return redirect()->route('temporary-registrations.index')->with('success', 'Registration deleted successfully.');
+    }
+}
