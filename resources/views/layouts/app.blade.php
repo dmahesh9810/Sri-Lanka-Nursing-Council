@@ -26,6 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('temporary-registrations.*') ? 'active' : '' }}" href="{{ route('temporary-registrations.index') }}">Temp. Registrations</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('permanent-registrations.*') ? 'active' : '' }}" href="{{ route('permanent-registrations.index') }}">Perm. Registrations</a>
+                </li>
             </ul>
         </div>
     </div>
