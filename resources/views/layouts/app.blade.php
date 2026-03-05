@@ -21,7 +21,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('nurses.index') }}">Nurses</a>
+                    <a class="nav-link {{ request()->routeIs('nurses.*') ? 'active' : '' }}" href="{{ route('nurses.index') }}">Nurses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('temporary-registrations.*') ? 'active' : '' }}" href="{{ route('temporary-registrations.index') }}">Temp. Registrations</a>
                 </li>
             </ul>
         </div>
