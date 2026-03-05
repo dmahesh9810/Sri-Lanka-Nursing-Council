@@ -32,6 +32,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('additional-qualifications.*') ? 'active' : '' }}" href="{{ route('additional-qualifications.index') }}">Add. Qualifications</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('foreign-certificates.*') ? 'active' : '' }}" href="{{ route('foreign-certificates.index') }}">Foreign Certs</a>
+                </li>
             </ul>
         </div>
     </div>
