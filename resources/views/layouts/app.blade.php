@@ -29,6 +29,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('permanent-registrations.*') ? 'active' : '' }}" href="{{ route('permanent-registrations.index') }}">Perm. Registrations</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('additional-qualifications.*') ? 'active' : '' }}" href="{{ route('additional-qualifications.index') }}">Add. Qualifications</a>
+                </li>
             </ul>
         </div>
     </div>
