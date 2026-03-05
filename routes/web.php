@@ -7,6 +7,7 @@ use App\Http\Controllers\TemporaryRegistrationController;
 use App\Http\Controllers\PermanentRegistrationController;
 use App\Http\Controllers\AdditionalQualificationController;
 use App\Http\Controllers\ForeignCertificateController;
+use App\Http\Controllers\CertificateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,3 +18,4 @@ Route::resource('temporary-registrations', TemporaryRegistrationController::clas
 Route::resource('permanent-registrations', PermanentRegistrationController::class);
 Route::resource('additional-qualifications', AdditionalQualificationController::class);
 Route::resource('foreign-certificates', ForeignCertificateController::class);
+Route::get('/certificates/{id}/print', [CertificateController::class , 'generate'])->name('certificates.print');
