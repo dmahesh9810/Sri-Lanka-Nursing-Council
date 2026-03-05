@@ -9,6 +9,12 @@ class Nurse extends Model
     protected $fillable = [
         'name',
         'nic',
+        'address',
+        'phone',
+        'gender',
+        'date_of_birth',
+        'school_or_university',
+        'batch',
     ];
 
     public function temporaryRegistration()
