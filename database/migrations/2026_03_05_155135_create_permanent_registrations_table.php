@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignId('nurse_id')->constrained()->onDelete('cascade')->unique();
             $table->string('perm_registration_no');
             $table->date('perm_registration_date');
-            $table->date('appointment_date');
-            $table->string('grade');
-            $table->string('present_workplace');
-            $table->string('slmc_no');
-            $table->date('slmc_date');
+            $table->date('appointment_date')->nullable();
+            $table->string('grade')->nullable();
+            $table->string('present_workplace')->nullable();
+            $table->string('slmc_no')->nullable();
+            $table->date('slmc_date')->nullable();
             $table->timestamps();
         });
     }

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ForeignCertificate extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nurse_id',
         'certificate_type',

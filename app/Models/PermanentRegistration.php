@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PermanentRegistration extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nurse_id',
         'perm_registration_no',

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TemporaryRegistration extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nurse_id',
         'temp_registration_no',
