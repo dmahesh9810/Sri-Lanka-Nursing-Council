@@ -66,6 +66,10 @@
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="{{ route('foreign-certificates.show', $cert) }}" class="btn btn-outline-info" title="View"><i class="bi bi-eye"></i></a>
                                         <a href="{{ route('foreign-certificates.edit', $cert) }}" class="btn btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        @if($cert->certificate_sealed && $cert->issue_date)
+                                            <a href="{{ route('certificates.print', $cert->id) }}" class="btn btn-outline-success" title="Preview Certificate" target="_blank"><i class="bi bi-printer"></i></a>
+                                            <a href="{{ route('certificates.print', $cert->id) . '?action=download' }}" class="btn btn-outline-secondary" title="Download Certificate" target="_blank"><i class="bi bi-download"></i></a>
+                                        @endif
                                         <form action="{{ route('foreign-certificates.destroy', $cert) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this foreign certificate application?');">
                                             @csrf
                                             @method('DELETE')

@@ -14,6 +14,14 @@ class ForeignCertificate extends Model
         'certificate_sealed',
         'issue_date',
         'certificate_printed',
+        'printed_at',
+        'certificate_number',
+    ];
+
+    protected $casts = [
+        'certificate_sealed' => 'boolean',
+        'certificate_printed' => 'boolean',
+        'printed_at' => 'datetime',
     ];
 
     public function nurse()

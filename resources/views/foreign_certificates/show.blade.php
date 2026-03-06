@@ -11,6 +11,31 @@
             </div>
         </div>
 
+        @if($foreignCertificate->certificate_sealed && $foreignCertificate->issue_date)
+        <div class="alert alert-success border-0 shadow-sm d-flex align-items-center justify-content-between mb-4" role="alert">
+            <div>
+                <i class="bi bi-patch-check-fill text-success me-2 fs-5"></i>
+                <strong>Certificate is Ready to Print</strong> &mdash; Sealed and officially issued.
+                @if($foreignCertificate->printed_at)
+                    <span class="text-muted ms-2 small">Last printed: {{ $foreignCertificate->printed_at->format('d M Y, H:i A') }}</span>
+                @endif
+            </div>
+            <div>
+                <a href="{{ route('certificates.print', $foreignCertificate->id) }}" class="btn btn-success me-2" target="_blank">
+                    <i class="bi bi-printer-fill"></i> Preview Certificate
+                </a>
+                <a href="{{ route('certificates.print', $foreignCertificate->id) . '?action=download' }}" class="btn btn-outline-success" target="_blank">
+                    <i class="bi bi-download"></i> Download PDF
+                </a>
+            </div>
+        </div>
+        @else
+        <div class="alert alert-warning border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>Certificate not printable:</strong> Certificate must be sealed and issued before printing.
+        </div>
+        @endif
+
         <div class="row">
             <div class="col-md-6 mb-4 mb-md-0">
                 <!-- Certificate Info -->
@@ -72,10 +97,24 @@
                             <div class="col-sm-7">{{ $foreignCertificate->created_at->format('d M Y H:i A') }}</div>
                         </div>
                         <hr class="text-muted opacity-25">
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-sm-5 text-muted">Last Updated</div>
                             <div class="col-sm-7">{{ $foreignCertificate->updated_at->format('d M Y H:i A') }}</div>
                         </div>
+                        @if($foreignCertificate->certificate_number)
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Certificate Number</div>
+                            <div class="col-sm-7"><code class="text-success">{{ $foreignCertificate->certificate_number }}</code></div>
+                        </div>
+                        @endif
+                        @if($foreignCertificate->printed_at)
+                        <hr class="text-muted opacity-25">
+                        <div class="row">
+                            <div class="col-sm-5 text-muted">Printed At</div>
+                            <div class="col-sm-7">{{ $foreignCertificate->printed_at->format('d M Y H:i A') }}</div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
