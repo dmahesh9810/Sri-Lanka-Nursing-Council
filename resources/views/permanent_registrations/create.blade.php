@@ -25,7 +25,7 @@
                                 <input type="text" class="form-control" id="nic" name="nic" value="{{ request('nic') }}" placeholder="e.g. 199012345678" required>
                                 <button type="submit" class="btn btn-success">Search Nurse</button>
                             </div>
-                            <div class="form-text mt-2">The nurse must already exist and have a temporary registration to proceed.</div>
+                            <div class="form-text mt-2">The nurse must already exist to proceed. Temporary registration is optional.</div>
                         </div>
                     </form>
                 </div>

@@ -39,10 +39,6 @@ class PermanentRegistrationController extends Controller
                 return back()->with('error', 'Nurse not found.');
             }
 
-            if (!\App\Models\TemporaryRegistration::where('nurse_id', $nurse->id)->exists()) {
-                return back()->with('error', 'Temporary registration required before permanent registration.');
-            }
-
             if (\App\Models\PermanentRegistration::where('nurse_id', $nurse->id)->exists()) {
                 return back()->with('error', 'Permanent registration already exists.');
             }

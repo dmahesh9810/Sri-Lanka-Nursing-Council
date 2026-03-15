@@ -120,7 +120,7 @@
     </div>
 
     {{-- Certificates Printed --}}
-    <div class="col-sm-6 col-xl-4">
+    <div class="col-sm-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #20c997 !important;">
             <div class="card-body d-flex align-items-center gap-3 p-4">
                 <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
@@ -128,20 +128,51 @@
                     <i class="bi bi-printer-fill fs-4" style="color:#20c997;"></i>
                 </div>
                 <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Certificates Printed</div>
+                    <div class="text-muted small text-uppercase fw-semibold">Foreign Certs Printed</div>
                     <div class="display-6 fw-bold" style="color:#20c997;">{{ number_format($stats['total_printed']) }}</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    {{-- Perm Certificates Printed --}}
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #e83e8c !important;">
+            <div class="card-body d-flex align-items-center gap-3 p-4">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:56px;height:56px;background:rgba(232,62,140,.12);">
+                    <i class="bi bi-file-earmark-person-fill fs-4" style="color:#e83e8c;"></i>
+                </div>
+                <div>
+                    <div class="text-muted small text-uppercase fw-semibold">Perm Certs Printed</div>
+                    <div class="display-6 fw-bold" style="color:#e83e8c;">{{ number_format($stats['total_perm_certificates_printed']) }}</div>
+                </div>
+            </div>
             <div class="card-footer bg-white border-top py-2 px-4">
-                @php
-                    $printPercent = $stats['total_foreign_certificates'] > 0
-                        ? round(($stats['total_printed'] / $stats['total_foreign_certificates']) * 100)
-                        : 0;
-                @endphp
-                <span class="small text-muted">
-                    <i class="bi bi-bar-chart-line me-1" style="color:#20c997;"></i>
-                    {{ $printPercent }}% of foreign cert requests printed
-                </span>
+                <a href="{{ route('permanent-certificates.index') }}" class="text-decoration-none small fw-semibold" style="color:#e83e8c;">
+                    <i class="bi bi-arrow-right-circle me-1"></i>Issue & Print
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{-- Total Reports Generated --}}
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ef4444 !important;">
+            <div class="card-body d-flex align-items-center gap-3 p-4">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:56px;height:56px;background:rgba(239,68,68,.12);">
+                    <i class="bi bi-file-earmark-pdf-fill fs-4" style="color:#ef4444;"></i>
+                </div>
+                <div>
+                    <div class="text-muted small text-uppercase fw-semibold">Reports Generated</div>
+                    <div class="display-6 fw-bold" style="color:#ef4444;">{{ number_format($stats['total_reports_generated']) }}</div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-top py-2 px-4">
+                <a href="{{ route('reports.index') }}" class="text-decoration-none small fw-semibold" style="color:#ef4444;">
+                    <i class="bi bi-arrow-right-circle me-1"></i>Generate Report
+                </a>
             </div>
         </div>
     </div>

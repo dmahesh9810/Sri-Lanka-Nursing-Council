@@ -12,6 +12,13 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public const ROLE_ADMIN = 1;
+    public const ROLE_USER1 = 2; // Temp Reg
+    public const ROLE_USER2 = 3; // Temp + Perm Reg
+    public const ROLE_USER3 = 4; // Perm Reg + Cert Print
+    public const ROLE_USER4 = 5; // Add Qual + Perm Reg
+    public const ROLE_USER5 = 6; // Foreign Cert + Perm Reg
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +52,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hasRole(...$roles): bool
+    {
+        return in_array($this->role, $roles);
     }
 }

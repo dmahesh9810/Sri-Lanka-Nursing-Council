@@ -52,13 +52,37 @@ class TemporaryRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nurse_id' => 'required|exists:nurses,id|unique:temporary_registrations,nurse_id',
-            'temp_registration_no' => 'required|string|max:255',
-            'temp_registration_date' => 'required|date',
-        ]);
+        if ($request->has('is_new_nurse')) {
+            $nurseData = $request->validate([
+                'new_name' => 'required|string|max:255',
+                'new_nic' => 'required|string|max:20|unique:nurses,nic',
+                'new_phone' => 'nullable|string|max:20',
+                'new_gender' => 'nullable|string|max:10',
+                'temp_registration_no' => 'required|string|max:255',
+                'temp_registration_date' => 'required|date',
+            ]);
 
-        \App\Models\TemporaryRegistration::create($validated);
+            $nurse = \App\Models\Nurse::create([
+                'name' => $nurseData['new_name'],
+                'nic' => $nurseData['new_nic'],
+                'phone' => $nurseData['new_phone'],
+                'gender' => $nurseData['new_gender'],
+            ]);
+
+            \App\Models\TemporaryRegistration::create([
+                'nurse_id' => $nurse->id,
+                'temp_registration_no' => $nurseData['temp_registration_no'],
+                'temp_registration_date' => $nurseData['temp_registration_date'],
+            ]);
+        } else {
+            $validated = $request->validate([
+                'nurse_id' => 'required|exists:nurses,id|unique:temporary_registrations,nurse_id',
+                'temp_registration_no' => 'required|string|max:255',
+                'temp_registration_date' => 'required|date',
+            ]);
+
+            \App\Models\TemporaryRegistration::create($validated);
+        }
 
         return redirect()->route('temporary-registrations.index')->with('success', 'Temporary Registration created successfully.');
     }

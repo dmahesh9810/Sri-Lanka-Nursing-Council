@@ -57,6 +57,7 @@ class NurseController extends Controller
      */
     public function show(\App\Models\Nurse $nurse)
     {
+        $nurse->load('permanentRegistration');
         return view('nurses.show', compact('nurse'));
     }
 

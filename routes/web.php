@@ -23,10 +23,36 @@ Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
 
-    Route::resource('nurses', NurseController::class);
-    Route::resource('temporary-registrations', TemporaryRegistrationController::class);
-    Route::resource('permanent-registrations', PermanentRegistrationController::class);
-    Route::resource('additional-qualifications', AdditionalQualificationController::class);
-    Route::resource('foreign-certificates', ForeignCertificateController::class);
-    Route::get('/certificates/{id}/print', [CertificateController::class , 'generate'])->name('certificates.print');
+    Route::middleware('role:1')->group(function () {
+        Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+        Route::post('/reports/generate', [\App\Http\Controllers\ReportController::class, 'generate'])->name('reports.generate');
+    });
+
+    // Admin has access to all, plus specific roles per module
+    Route::middleware('role:1,3,4,5,6')->group(function () {
+        Route::resource('nurses', NurseController::class);
+    });
+
+    Route::middleware('role:1,2,3')->group(function () {
+        Route::resource('temporary-registrations', TemporaryRegistrationController::class);
+    });
+
+    Route::middleware('role:1,3,4,5,6')->group(function () {
+        Route::resource('permanent-registrations', PermanentRegistrationController::class);
+    });
+
+    Route::middleware('role:1,4')->group(function () {
+        Route::get('permanent-certificates', [\App\Http\Controllers\PermanentCertificateController::class, 'index'])->name('permanent-certificates.index');
+        Route::post('permanent-certificates/{id}/status', [\App\Http\Controllers\PermanentCertificateController::class, 'updateStatus'])->name('permanent-certificates.status');
+        Route::get('permanent-certificates/{id}/print', [\App\Http\Controllers\PermanentCertificateController::class, 'printPdf'])->name('permanent-certificates.print');
+    });
+
+    Route::middleware('role:1,5')->group(function () {
+        Route::resource('additional-qualifications', AdditionalQualificationController::class);
+    });
+
+    Route::middleware('role:1,6')->group(function () {
+        Route::resource('foreign-certificates', ForeignCertificateController::class);
+        Route::get('/certificates/{id}/print', [CertificateController::class , 'generate'])->name('certificates.print');
+    });
 });
