@@ -48,16 +48,16 @@
                                 <td>{{ \Carbon\Carbon::parse($qual->qualification_date)->format('d M Y') }}</td>
                                 <td class="text-center">
                                     @if($qual->certificate_printed)
-                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Yes</span>
+                                        <span class="badge bg-success">Printed</span>
                                     @else
-                                        <span class="badge bg-danger"><i class="bi bi-x-circle"></i> No</span>
+                                        <span class="badge bg-warning text-dark">Pending</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @if($qual->certificate_posted)
-                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Yes</span>
+                                        <span class="badge bg-primary">Posted</span>
                                     @else
-                                        <span class="badge bg-danger"><i class="bi bi-x-circle"></i> No</span>
+                                        <span class="badge bg-secondary">Not Posted</span>
                                     @endif
                                 </td>
                                 <td class="text-center">

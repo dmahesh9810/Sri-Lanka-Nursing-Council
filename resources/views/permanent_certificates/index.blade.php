@@ -58,12 +58,22 @@
                                     <form action="{{ route('permanent-certificates.status', $reg->id) }}" method="POST">
                                         @csrf
                                         <td>
-                                            <div class="form-check form-switch">
+                                            @if($reg->certificate_printed)
+                                                <span class="badge bg-success mb-2 d-block">Printed</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark mb-2 d-block">Pending</span>
+                                            @endif
+                                            <div class="form-check form-switch d-flex justify-content-center">
                                                 <input class="form-check-input" type="checkbox" role="switch" name="certificate_printed" value="1" {{ $reg->certificate_printed ? 'checked' : '' }} onChange="this.form.submit()">
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="form-check form-switch">
+                                            @if($reg->certificate_posted)
+                                                <span class="badge bg-primary mb-2 d-block">Posted</span>
+                                            @else
+                                                <span class="badge bg-secondary mb-2 d-block">Not Posted</span>
+                                            @endif
+                                            <div class="form-check form-switch d-flex justify-content-center">
                                                 <input class="form-check-input" type="checkbox" role="switch" name="certificate_posted" value="1" {{ $reg->certificate_posted ? 'checked' : '' }} onChange="this.form.submit()">
                                             </div>
                                         </td>
@@ -71,7 +81,7 @@
 
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('permanent-certificates.print', $reg->id) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                            <a href="{{ route('permanent-certificates.print', $reg->id) }}" target="_blank" class="btn btn-sm btn-outline-success print-cert-btn">
                                                 <i class="bi bi-file-earmark-pdf"></i> Print PDF
                                             </a>
                                         </div>
@@ -97,4 +107,29 @@
         </div>
     </div>
 </div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-3 fw-bold text-success fs-5">Preparing PDF... please wait.</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const printLinks = document.querySelectorAll('.print-cert-btn');
+        const overlay = document.getElementById('loadingOverlay');
+
+        printLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                overlay.style.display = 'flex';
+                // Hide overlay after 3 seconds since it opens in new tab
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 3000);
+            });
+        });
+    });
+</script>
 @endsection

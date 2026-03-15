@@ -18,6 +18,13 @@ class PermanentRegistration extends Model
         'present_workplace',
         'slmc_no',
         'slmc_date',
+        'certificate_printed',
+        'certificate_posted',
+    ];
+
+    protected $casts = [
+        'certificate_printed' => 'boolean',
+        'certificate_posted'  => 'boolean',
     ];
 
     public function nurse()

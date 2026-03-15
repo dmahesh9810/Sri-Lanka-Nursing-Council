@@ -49,6 +49,28 @@
                 </form>
             </div>
         </div>
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
     </div>
+    <div class="mt-3 fw-bold text-primary fs-5">Generating report... please wait.</div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const overlay = document.getElementById('loadingOverlay');
+
+        if (form) {
+            form.addEventListener('submit', function() {
+                overlay.style.display = 'flex';
+                // Hide overlay after 5 seconds since the form opens in a new tab
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 5000);
+            });
+        }
+    });
+</script>
 @endsection

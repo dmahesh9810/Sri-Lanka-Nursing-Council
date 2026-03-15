@@ -12,47 +12,72 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('nurses.index') }}">
+        <a class="navbar-brand" href="{{ route('dashboard') }}">
             <i class="bi bi-hospital"></i> Nurse Management System
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            @auth
+            <form action="{{ route('global.search') }}" method="GET" class="d-flex ms-lg-4 my-2 my-lg-0">
+                <div class="input-group input-group-sm bg-white rounded">
+                    <input class="form-control border-0 shadow-none" type="search" name="q" placeholder="Global search by NIC..." aria-label="Search" value="{{ request('q') }}" required>
+                    <button class="btn btn-light border-0" type="submit"><i class="bi bi-search text-muted"></i></button>
+                </div>
+            </form>
+            @endauth
             <ul class="navbar-nav ms-auto">
+
+                {{-- Dashboard: Admin only --}}
+                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
                 </li>
-                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER2, \App\Models\User::ROLE_USER3, \App\Models\User::ROLE_USER4, \App\Models\User::ROLE_USER5, \App\Models\User::ROLE_USER1))
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('nurses.*') ? 'active' : '' }}" href="{{ route('nurses.index') }}">Nurses</a>
-                </li>
                 @endif
+
+                {{-- Temporary Registrations: Admin, User1, User2 --}}
                 @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER1, \App\Models\User::ROLE_USER2))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('temporary-registrations.*') ? 'active' : '' }}" href="{{ route('temporary-registrations.index') }}">Temp. Registrations</a>
                 </li>
                 @endif
-                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER2, \App\Models\User::ROLE_USER3, \App\Models\User::ROLE_USER4, \App\Models\User::ROLE_USER5, \App\Models\User::ROLE_USER1))
+
+                {{-- Permanent Registrations: Admin, User2, User3, User4, User5 --}}
+                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER2, \App\Models\User::ROLE_USER3, \App\Models\User::ROLE_USER4, \App\Models\User::ROLE_USER5))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('permanent-registrations.*') ? 'active' : '' }}" href="{{ route('permanent-registrations.index') }}">Perm. Registrations</a>
                 </li>
                 @endif
+
+                {{-- Permanent Certificates: Admin, User3 --}}
+                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER3))
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('permanent-certificates.*') ? 'active' : '' }}" href="{{ route('permanent-certificates.index') }}">Perm. Certificates</a>
+                </li>
+                @endif
+
+                {{-- Additional Qualifications: Admin, User4 --}}
                 @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER4))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('additional-qualifications.*') ? 'active' : '' }}" href="{{ route('additional-qualifications.index') }}">Add. Qualifications</a>
                 </li>
                 @endif
+
+                {{-- Foreign Certificates: Admin, User5 --}}
                 @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER5))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('foreign-certificates.*') ? 'active' : '' }}" href="{{ route('foreign-certificates.index') }}">Foreign Certs</a>
                 </li>
                 @endif
-                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN))
+
+                {{-- Reports: All roles --}}
+                @if(auth()->check() && auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_USER1, \App\Models\User::ROLE_USER2, \App\Models\User::ROLE_USER3, \App\Models\User::ROLE_USER4, \App\Models\User::ROLE_USER5))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">Reports</a>
                 </li>
                 @endif
+
                 @auth
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="POST" class="d-inline">

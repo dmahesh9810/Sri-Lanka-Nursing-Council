@@ -15,11 +15,21 @@ class ForeignCertificateController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->whereHas('nurse', function ($q) use ($search) {
-                $q->where('nic', 'like', '%' . $search . '%');
-            })
+            $query->where(function($q) use ($search) {
+                $q->whereHas('nurse', function ($subQ) use ($search) {
+                    $subQ->where('nic', 'like', '%' . $search . '%');
+                })
                 ->orWhere('certificate_type', 'like', '%' . $search . '%')
                 ->orWhere('country', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('type')) {
+            $query->where('certificate_type', $request->type);
+        }
+
+        if ($request->filled('country')) {
+            $query->where('country', 'like', '%' . $request->country . '%');
         }
 
         $certificates = $query->latest()->paginate(10)->withQueryString();

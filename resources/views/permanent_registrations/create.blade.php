@@ -25,9 +25,102 @@
                                 <input type="text" class="form-control" id="nic" name="nic" value="{{ request('nic') }}" placeholder="e.g. 199012345678" required>
                                 <button type="submit" class="btn btn-success">Search Nurse</button>
                             </div>
-                            <div class="form-text mt-2">The nurse must already exist to proceed. Temporary registration is optional.</div>
+                            <div class="form-text mt-2">Search for an existing nurse by NIC to issue a permanent registration.</div>
                         </div>
                     </form>
+
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="text-muted mb-2">Can't find the nurse?</p>
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addNurseModal">
+                            <i class="bi bi-person-plus"></i> Add New Nurse
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Nurse Modal -->
+            <div class="modal fade" id="addNurseModal" tabindex="-1" aria-labelledby="addNurseModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="addNurseModalLabel"><i class="bi bi-person-plus-fill"></i> Register New Nurse &amp; Issue Permanent Registration</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('permanent-registrations.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="is_new_nurse" value="1">
+                            <div class="modal-body p-4">
+                                <h6 class="border-bottom pb-2 mb-3 text-success">Personal Information</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="new_name" class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="new_name" name="new_name" value="{{ old('new_name') }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="new_nic" class="form-label fw-bold">NIC <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="new_nic" name="new_nic" value="{{ old('new_nic') }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="new_phone" class="form-label fw-bold">Phone</label>
+                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="new_gender" class="form-label fw-bold">Gender</label>
+                                        <select class="form-select" id="new_gender" name="new_gender">
+                                            <option value="">Select Gender</option>
+                                            <option value="Female" @selected(old('new_gender') == 'Female')>Female</option>
+                                            <option value="Male" @selected(old('new_gender') == 'Male')>Male</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <h6 class="border-bottom pb-2 mb-3 text-success mt-4">Permanent Registration Details</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="perm_registration_no_modal" class="form-label fw-bold">Permanent Reg. No. <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="perm_registration_no_modal" name="perm_registration_no" value="{{ old('perm_registration_no') }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="perm_registration_date_modal" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="perm_registration_date_modal" name="perm_registration_date" value="{{ old('perm_registration_date', date('Y-m-d')) }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="appointment_date_modal" class="form-label fw-bold">Appointment Date</label>
+                                        <input type="date" class="form-control" id="appointment_date_modal" name="appointment_date" value="{{ old('appointment_date') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="grade_modal" class="form-label fw-bold">Grade</label>
+                                        <input type="text" class="form-control" id="grade_modal" name="grade" value="{{ old('grade') }}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="present_workplace_modal" class="form-label fw-bold">Present Workplace</label>
+                                        <input type="text" class="form-control" id="present_workplace_modal" name="present_workplace" value="{{ old('present_workplace') }}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="slmc_no_modal" class="form-label fw-bold">SLMC No.</label>
+                                        <input type="text" class="form-control" id="slmc_no_modal" name="slmc_no" value="{{ old('slmc_no') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="slmc_date_modal" class="form-label fw-bold">SLMC Date</label>
+                                        <input type="date" class="form-control" id="slmc_date_modal" name="slmc_date" value="{{ old('slmc_date') }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-light">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Register Nurse &amp; Issue Perm. Reg.</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         @else

@@ -10,15 +10,57 @@
 
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body bg-white rounded-3">
-            <form action="{{ route('permanent-registrations.index') }}" method="GET" class="d-flex w-50">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search by Nurse NIC or Perm Reg No..." value="{{ request('search') }}">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Search</button>
-                    @if(request('search'))
-                        <a href="{{ route('permanent-registrations.index') }}" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i> Clear</a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <form action="{{ route('permanent-registrations.index') }}" method="GET" class="d-flex w-50">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search by Nurse NIC or Perm Reg No..." value="{{ request('search') }}">
+                        @if(request('year')) <input type="hidden" name="year" value="{{ request('year') }}"> @endif
+                        @if(request('grade')) <input type="hidden" name="grade" value="{{ request('grade') }}"> @endif
+                        @if(request('workplace')) <input type="hidden" name="workplace" value="{{ request('workplace') }}"> @endif
+                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Search</button>
+                    </div>
+                </form>
+                <div>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                        <i class="bi bi-funnel"></i> Filters
+                    </button>
+                    @if(request('search') || request('year') || request('grade') || request('workplace'))
+                        <a href="{{ route('permanent-registrations.index') }}" class="btn btn-outline-danger ms-2"><i class="bi bi-x-lg"></i> Clear All</a>
                     @endif
                 </div>
-            </form>
+            </div>
+
+            <div class="collapse {{ request('year') || request('grade') || request('workplace') ? 'show' : '' }}" id="filterCollapse">
+                <form action="{{ route('permanent-registrations.index') }}" method="GET" class="row g-3 py-3 border-top mt-1">
+                    @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
+                    <div class="col-md-3">
+                        <label for="year" class="form-label text-muted small">Registration Year</label>
+                        <select name="year" id="year" class="form-select form-select-sm">
+                            <option value="">All Years</option>
+                            @for($i = date('Y'); $i >= 2000; $i--)
+                                <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="grade" class="form-label text-muted small">Grade</label>
+                        <select name="grade" id="grade" class="form-select form-select-sm">
+                            <option value="">All Grades</option>
+                            <option value="Special Grade" {{ request('grade') == 'Special Grade' ? 'selected' : '' }}>Special Grade</option>
+                            <option value="Grade I" {{ request('grade') == 'Grade I' ? 'selected' : '' }}>Grade I</option>
+                            <option value="Grade II" {{ request('grade') == 'Grade II' ? 'selected' : '' }}>Grade II</option>
+                            <option value="Grade III" {{ request('grade') == 'Grade III' ? 'selected' : '' }}>Grade III</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="workplace" class="form-label text-muted small">Workplace (keyword)</label>
+                        <input type="text" name="workplace" id="workplace" class="form-control form-control-sm" placeholder="e.g. Colombo South" value="{{ request('workplace') }}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-sm btn-primary w-100">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

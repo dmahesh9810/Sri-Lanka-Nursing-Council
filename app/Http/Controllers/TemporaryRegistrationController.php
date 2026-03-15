@@ -84,6 +84,9 @@ class TemporaryRegistrationController extends Controller
             \App\Models\TemporaryRegistration::create($validated);
         }
 
+        $regNo = isset($nurseData) ? $nurseData['temp_registration_no'] : $validated['temp_registration_no'];
+        \App\Models\ActivityLog::record('Temporary registration created', "Temporary registration ($regNo) was added to the system.");
+
         return redirect()->route('temporary-registrations.index')->with('success', 'Temporary Registration created successfully.');
     }
 

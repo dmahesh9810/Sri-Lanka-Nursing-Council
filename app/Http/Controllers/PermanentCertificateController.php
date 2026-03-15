@@ -58,6 +58,8 @@ class PermanentCertificateController extends Controller
         // You might want to track printed_at timestamp, but standard req just says boolean. Let's stick to boolean.
         $registration->save();
 
+        \App\Models\ActivityLog::record('Permanent certificate printed', "Permanent certificate for {$registration->perm_registration_no} was generated/printed.");
+
         $pdf = Pdf::loadView('permanent_certificates.pdf', compact('registration'))
             ->setPaper('a4', 'portrait');
 

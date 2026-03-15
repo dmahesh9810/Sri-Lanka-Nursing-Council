@@ -49,6 +49,8 @@ class NurseController extends Controller
 
         \App\Models\Nurse::create($validated);
 
+        \App\Models\ActivityLog::record('Nurse registered', "Nurse {$validated['name']} ({$validated['nic']}) was registered.");
+
         return redirect()->route('nurses.index')->with('success', 'Nurse successfully completely registered.');
     }
 
@@ -57,7 +59,7 @@ class NurseController extends Controller
      */
     public function show(\App\Models\Nurse $nurse)
     {
-        $nurse->load('permanentRegistration');
+        $nurse->load('temporaryRegistration', 'permanentRegistration', 'additionalQualifications', 'foreignCertificates');
         return view('nurses.show', compact('nurse'));
     }
 

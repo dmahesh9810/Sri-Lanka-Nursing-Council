@@ -22,6 +22,7 @@ Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('global.search');
 
     Route::middleware('role:1')->group(function () {
         Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');

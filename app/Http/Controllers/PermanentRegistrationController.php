@@ -15,9 +15,23 @@ class PermanentRegistrationController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->whereHas('nurse', function ($q) use ($search) {
-                $q->where('nic', 'like', '%' . $search . '%');
-            })->orWhere('perm_registration_no', 'like', '%' . $search . '%');
+            $query->where(function($q) use ($search) {
+                $q->whereHas('nurse', function ($subQ) use ($search) {
+                    $subQ->where('nic', 'like', '%' . $search . '%');
+                })->orWhere('perm_registration_no', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('year')) {
+            $query->whereYear('perm_registration_date', $request->year);
+        }
+
+        if ($request->filled('grade')) {
+            $query->where('grade', 'like', '%' . $request->grade . '%');
+        }
+
+        if ($request->filled('workplace')) {
+            $query->where('present_workplace', 'like', '%' . $request->workplace . '%');
         }
 
         $registrations = $query->latest()->paginate(10)->withQueryString();
@@ -52,18 +66,56 @@ class PermanentRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nurse_id' => 'required|exists:nurses,id|unique:permanent_registrations,nurse_id',
-            'perm_registration_no' => 'required|string|max:255|unique:permanent_registrations,perm_registration_no',
-            'perm_registration_date' => 'required|date',
-            'appointment_date' => 'nullable|date',
-            'grade' => 'nullable|string|max:255',
-            'present_workplace' => 'nullable|string|max:255',
-            'slmc_no' => 'nullable|string|max:255',
-            'slmc_date' => 'nullable|date',
-        ]);
+        if ($request->has('is_new_nurse')) {
+            // Create new nurse inline then create permanent registration
+            $nurseData = $request->validate([
+                'new_name'              => 'required|string|max:255',
+                'new_nic'               => 'required|string|max:20|unique:nurses,nic',
+                'new_phone'             => 'nullable|string|max:20',
+                'new_gender'            => 'nullable|string|max:10',
+                'perm_registration_no'  => 'required|string|max:255|unique:permanent_registrations,perm_registration_no',
+                'perm_registration_date'=> 'required|date',
+                'appointment_date'      => 'nullable|date',
+                'grade'                 => 'nullable|string|max:255',
+                'present_workplace'     => 'nullable|string|max:255',
+                'slmc_no'               => 'nullable|string|max:255',
+                'slmc_date'             => 'nullable|date',
+            ]);
 
-        \App\Models\PermanentRegistration::create($validated);
+            $nurse = \App\Models\Nurse::create([
+                'name'   => $nurseData['new_name'],
+                'nic'    => $nurseData['new_nic'],
+                'phone'  => $nurseData['new_phone'] ?? null,
+                'gender' => $nurseData['new_gender'] ?? null,
+            ]);
+
+            \App\Models\PermanentRegistration::create([
+                'nurse_id'              => $nurse->id,
+                'perm_registration_no'  => $nurseData['perm_registration_no'],
+                'perm_registration_date'=> $nurseData['perm_registration_date'],
+                'appointment_date'      => $nurseData['appointment_date'] ?? null,
+                'grade'                 => $nurseData['grade'] ?? null,
+                'present_workplace'     => $nurseData['present_workplace'] ?? null,
+                'slmc_no'               => $nurseData['slmc_no'] ?? null,
+                'slmc_date'             => $nurseData['slmc_date'] ?? null,
+            ]);
+        } else {
+            $validated = $request->validate([
+                'nurse_id'              => 'required|exists:nurses,id|unique:permanent_registrations,nurse_id',
+                'perm_registration_no'  => 'required|string|max:255|unique:permanent_registrations,perm_registration_no',
+                'perm_registration_date'=> 'required|date',
+                'appointment_date'      => 'nullable|date',
+                'grade'                 => 'nullable|string|max:255',
+                'present_workplace'     => 'nullable|string|max:255',
+                'slmc_no'               => 'nullable|string|max:255',
+                'slmc_date'             => 'nullable|date',
+            ]);
+
+            \App\Models\PermanentRegistration::create($validated);
+        }
+
+        $regNo = isset($nurseData) ? $nurseData['perm_registration_no'] : $validated['perm_registration_no'];
+        \App\Models\ActivityLog::record('Permanent registration created', "Permanent registration ($regNo) was added to the system.");
 
         return redirect()->route('permanent-registrations.index')->with('success', 'Permanent Registration created successfully.');
     }

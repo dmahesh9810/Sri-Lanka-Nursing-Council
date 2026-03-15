@@ -179,6 +179,95 @@
 
 </div>
 
+{{-- Charts Section --}}
+<div class="row g-4 mb-4">
+    {{-- Chart 1: Monthly Temp Registrations --}}
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-bar-chart-fill text-info me-2"></i>Monthly Temp. Registrations (12 Months)</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="tempChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Chart 2: Monthly Perm Registrations --}}
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-graph-up-arrow text-success me-2"></i>Monthly Perm. Registrations (12 Months)</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="permChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Chart 3: Foreign Certs by Country --}}
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-pie-chart-fill text-warning me-2"></i>Foreign Certificates by Country</h6>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="countryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Chart 4: Certs Printed vs Pending --}}
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-printer-fill text-primary me-2"></i>Foreign Certs Print Status</h6>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="certStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Recent Activity --}}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-clock-history text-primary me-2"></i>Recent Activity</h6>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @forelse($recentActivities as $activity)
+                        <li class="list-group-item px-4 py-3">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-dark">{{ $activity->action }}</h6>
+                                    <p class="mb-0 text-muted small">{{ $activity->description }}</p>
+                                    @if($activity->user)
+                                        <div class="small text-primary mt-1"><i class="bi bi-person-circle me-1"></i>{{ $activity->user->name }}</div>
+                                    @endif
+                                </div>
+                                <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ $activity->created_at->diffForHumans() }}</small>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="list-group-item px-4 py-4 text-center text-muted">
+                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                            No recent activity found.
+                        </li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Quick Navigation --}}
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white border-bottom py-3">
@@ -204,5 +293,108 @@
         </div>
     </div>
 </div>
+
+{{-- Chart.js Scripts --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Shared styling
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    Chart.defaults.color = '#6c757d';
+
+    // Chart 1: Temp Registrations (Bar)
+    var ctxTemp = document.getElementById('tempChart').getContext('2d');
+    new Chart(ctxTemp, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($charts['temp_labels'] ?? []) !!},
+            datasets: [{
+                label: 'Temp Registrations',
+                data: {!! json_encode($charts['temp_data'] ?? []) !!},
+                backgroundColor: 'rgba(13, 202, 240, 0.7)',
+                borderColor: '#0dcaf0',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Chart 2: Perm Registrations (Line)
+    var ctxPerm = document.getElementById('permChart').getContext('2d');
+    new Chart(ctxPerm, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($charts['perm_labels'] ?? []) !!},
+            datasets: [{
+                label: 'Perm Registrations',
+                data: {!! json_encode($charts['perm_data'] ?? []) !!},
+                backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                borderColor: '#198754',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: '#198754'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Chart 3: Foreign Certs by Country (Doughnut)
+    var ctxCountry = document.getElementById('countryChart').getContext('2d');
+    new Chart(ctxCountry, {
+        type: 'doughnut',
+        data: {
+            labels: {!! json_encode($charts['country_labels'] ?? []) !!},
+            datasets: [{
+                data: {!! json_encode($charts['country_data'] ?? []) !!},
+                backgroundColor: [
+                    '#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#dc3545',
+                    '#fd7e14', '#ffc107', '#198754', '#20c997', '#0dcaf0'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+
+    // Chart 4: Certs Status (Pie)
+    var ctxStatus = document.getElementById('certStatusChart').getContext('2d');
+    new Chart(ctxStatus, {
+        type: 'pie',
+        data: {
+            labels: {!! json_encode($charts['cert_status_labels'] ?? []) !!},
+            datasets: [{
+                data: {!! json_encode($charts['cert_status_data'] ?? []) !!},
+                backgroundColor: ['#20c997', '#6c757d'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+});
+</script>
 
 @endsection

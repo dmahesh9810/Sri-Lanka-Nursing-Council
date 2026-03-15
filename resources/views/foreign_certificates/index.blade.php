@@ -10,15 +10,48 @@
 
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body bg-white rounded-3">
-            <form action="{{ route('foreign-certificates.index') }}" method="GET" class="d-flex w-50">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search by NIC, Type, or Country..." value="{{ request('search') }}">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Search</button>
-                    @if(request('search'))
-                        <a href="{{ route('foreign-certificates.index') }}" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i> Clear</a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <form action="{{ route('foreign-certificates.index') }}" method="GET" class="d-flex w-50">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search by NIC, Type, or Country..." value="{{ request('search') }}">
+                        @if(request('type')) <input type="hidden" name="type" value="{{ request('type') }}"> @endif
+                        @if(request('country')) <input type="hidden" name="country" value="{{ request('country') }}"> @endif
+                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Search</button>
+                    </div>
+                </form>
+                <div>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                        <i class="bi bi-funnel"></i> Filters
+                    </button>
+                    @if(request('search') || request('type') || request('country'))
+                        <a href="{{ route('foreign-certificates.index') }}" class="btn btn-outline-danger ms-2"><i class="bi bi-x-lg"></i> Clear All</a>
                     @endif
                 </div>
-            </form>
+            </div>
+
+            <div class="collapse {{ request('type') || request('country') ? 'show' : '' }}" id="filterCollapse">
+                <form action="{{ route('foreign-certificates.index') }}" method="GET" class="row g-3 py-3 border-top mt-1">
+                    @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
+                    
+                    <div class="col-md-5">
+                        <label for="type" class="form-label text-muted small">Certificate Type</label>
+                        <select name="type" id="type" class="form-select form-select-sm">
+                            <option value="">All Types</option>
+                            <option value="Verification" {{ request('type') == 'Verification' ? 'selected' : '' }}>Verification</option>
+                            <option value="Good Standing" {{ request('type') == 'Good Standing' ? 'selected' : '' }}>Good Standing</option>
+                            <option value="Confirmation" {{ request('type') == 'Confirmation' ? 'selected' : '' }}>Confirmation</option>
+                            <option value="Additional Verification" {{ request('type') == 'Additional Verification' ? 'selected' : '' }}>Additional Verification</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="country" class="form-label text-muted small">Country (keyword)</label>
+                        <input type="text" name="country" id="country" class="form-control form-control-sm" placeholder="e.g. Australia" value="{{ request('country') }}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-sm btn-primary w-100">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -50,27 +83,25 @@
                                 <td>{{ $cert->issue_date ? \Carbon\Carbon::parse($cert->issue_date)->format('d M Y') : 'Pending' }}</td>
                                 <td class="text-center">
                                     @if($cert->certificate_sealed)
-                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Yes</span>
+                                        <span class="badge bg-success">Sealed</span>
                                     @else
-                                        <span class="badge bg-danger"><i class="bi bi-x-circle"></i> No</span>
+                                        <span class="badge bg-warning text-dark">Pending</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @if($cert->certificate_printed)
-                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Yes</span>
+                                        <span class="badge bg-success">Printed</span>
                                     @else
-                                        <span class="badge bg-danger"><i class="bi bi-x-circle"></i> No</span>
+                                        <span class="badge bg-warning text-dark">Pending</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="{{ route('foreign-certificates.show', $cert) }}" class="btn btn-outline-info" title="View"><i class="bi bi-eye"></i></a>
                                         <a href="{{ route('foreign-certificates.edit', $cert) }}" class="btn btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>
-                                        @if($cert->certificate_sealed && $cert->issue_date)
-                                            <a href="{{ route('certificates.print', $cert->id) }}" class="btn btn-outline-success" title="Preview Certificate" target="_blank"><i class="bi bi-printer"></i></a>
-                                            <a href="{{ route('certificates.print', $cert->id) . '?action=download' }}" class="btn btn-outline-secondary" title="Download Certificate" target="_blank"><i class="bi bi-download"></i></a>
-                                        @endif
-                                        <form action="{{ route('foreign-certificates.destroy', $cert) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this foreign certificate application?');">
+                                        <a href="{{ route('certificates.print', $cert->id) }}" class="btn btn-outline-secondary" title="Preview Certificate" target="_blank"><i class="bi bi-file-earmark-pdf"></i> Preview</a>
+                                        <a href="{{ route('certificates.print', ['id' => $cert->id, 'action' => 'download']) }}" class="btn btn-outline-success" title="Download Certificate"><i class="bi bi-download"></i> Download</a>
+                                        <form action="{{ route('foreign-certificates.destroy', $cert) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this certificate record?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
