@@ -30,6 +30,26 @@
                         </div>
                         <hr class="text-muted opacity-25">
                         <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Address</div>
+                            <div class="col-sm-7">{{ $temporaryRegistration->address ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Batch</div>
+                            <div class="col-sm-7">{{ $temporaryRegistration->batch ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">School or University</div>
+                            <div class="col-sm-7">{{ $temporaryRegistration->school_university ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Birth Date</div>
+                            <div class="col-sm-7">{{ $temporaryRegistration->birth_date ? \Carbon\Carbon::parse($temporaryRegistration->birth_date)->format('d M Y') : 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
                             <div class="col-sm-5 text-muted">Record Created</div>
                             <div class="col-sm-7">{{ $temporaryRegistration->created_at->format('d M Y H:i A') }}</div>
                         </div>

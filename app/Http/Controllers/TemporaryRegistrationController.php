@@ -60,6 +60,10 @@ class TemporaryRegistrationController extends Controller
                 'new_gender' => 'nullable|string|max:10',
                 'temp_registration_no' => 'required|string|max:255',
                 'temp_registration_date' => 'required|date',
+                'address' => 'nullable|string|max:500',
+                'batch' => 'nullable|string|max:100',
+                'school_university' => 'nullable|string|max:255',
+                'birth_date' => 'nullable|date',
             ]);
 
             $nurse = \App\Models\Nurse::create([
@@ -73,12 +77,20 @@ class TemporaryRegistrationController extends Controller
                 'nurse_id' => $nurse->id,
                 'temp_registration_no' => $nurseData['temp_registration_no'],
                 'temp_registration_date' => $nurseData['temp_registration_date'],
+                'address' => $nurseData['address'],
+                'batch' => $nurseData['batch'],
+                'school_university' => $nurseData['school_university'],
+                'birth_date' => $nurseData['birth_date'],
             ]);
         } else {
             $validated = $request->validate([
                 'nurse_id' => 'required|exists:nurses,id|unique:temporary_registrations,nurse_id',
                 'temp_registration_no' => 'required|string|max:255',
                 'temp_registration_date' => 'required|date',
+                'address' => 'nullable|string|max:500',
+                'batch' => 'nullable|string|max:100',
+                'school_university' => 'nullable|string|max:255',
+                'birth_date' => 'nullable|date',
             ]);
 
             \App\Models\TemporaryRegistration::create($validated);
@@ -116,6 +128,10 @@ class TemporaryRegistrationController extends Controller
         $validated = $request->validate([
             'temp_registration_no' => 'required|string|max:255',
             'temp_registration_date' => 'required|date',
+            'address' => 'nullable|string|max:500',
+            'batch' => 'nullable|string|max:100',
+            'school_university' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
             'nurse_id' => [
                 'required',
                 'exists:nurses,id',

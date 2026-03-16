@@ -79,13 +79,25 @@
                                 
                                 <h6 class="border-bottom pb-2 mb-3 text-success mt-4">Temporary Registration Details</h6>
                                 <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="address_modal" class="form-label fw-bold">Address</label>
+                                        <textarea class="form-control" id="address_modal" name="address" rows="2">{{ old('address') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="temp_registration_no_modal" class="form-label fw-bold">Temporary Registration No. <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="temp_registration_no_modal" name="temp_registration_no" value="{{ old('temp_registration_no') }}" required>
+                                        <label for="batch_modal" class="form-label fw-bold">Batch</label>
+                                        <input type="text" class="form-control" id="batch_modal" name="batch" value="{{ old('batch') }}">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="temp_registration_date_modal" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" id="temp_registration_date_modal" name="temp_registration_date" value="{{ old('temp_registration_date', date('Y-m-d')) }}" required>
+                                        <label for="school_university_modal" class="form-label fw-bold">School or University</label>
+                                        <input type="text" class="form-control" id="school_university_modal" name="school_university" value="{{ old('school_university') }}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="birth_date_modal" class="form-label fw-bold">Birth Date</label>
+                                        <input type="date" class="form-control" id="birth_date_modal" name="birth_date" value="{{ old('birth_date') }}">
                                     </div>
                                 </div>
                             </div>
@@ -146,6 +158,35 @@
                                 <label for="temp_registration_date" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control @error('temp_registration_date') is-invalid @enderror" id="temp_registration_date" name="temp_registration_date" value="{{ old('temp_registration_date', date('Y-m-d')) }}" required>
                                 @error('temp_registration_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="address" class="form-label fw-bold">Address</label>
+                                <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address') }}</textarea>
+                                @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="batch" class="form-label fw-bold">Batch</label>
+                                <input type="text" class="form-control @error('batch') is-invalid @enderror" id="batch" name="batch" value="{{ old('batch') }}">
+                                @error('batch') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="school_university" class="form-label fw-bold">School or University</label>
+                                <input type="text" class="form-control @error('school_university') is-invalid @enderror" id="school_university" name="school_university" value="{{ old('school_university') }}">
+                                @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="birth_date" class="form-label fw-bold">Birth Date</label>
+                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
+                                @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

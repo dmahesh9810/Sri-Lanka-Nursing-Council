@@ -78,6 +78,11 @@ class PermanentRegistrationController extends Controller
                 'appointment_date'      => 'nullable|date',
                 'grade'                 => 'nullable|string|max:255',
                 'present_workplace'     => 'nullable|string|max:255',
+                'address'               => 'nullable|string|max:500',
+                'batch'                 => 'nullable|string|max:100',
+                'school_university'     => 'nullable|string|max:255',
+                'birth_date'            => 'nullable|date',
+                'qualification'         => 'nullable|in:Diploma,General Nursing,BSc Nursing',
                 'slmc_no'               => 'nullable|string|max:255',
                 'slmc_date'             => 'nullable|date',
             ]);
@@ -96,6 +101,11 @@ class PermanentRegistrationController extends Controller
                 'appointment_date'      => $nurseData['appointment_date'] ?? null,
                 'grade'                 => $nurseData['grade'] ?? null,
                 'present_workplace'     => $nurseData['present_workplace'] ?? null,
+                'address'               => $nurseData['address'] ?? null,
+                'batch'                 => $nurseData['batch'] ?? null,
+                'school_university'     => $nurseData['school_university'] ?? null,
+                'birth_date'            => $nurseData['birth_date'] ?? null,
+                'qualification'         => $nurseData['qualification'] ?? null,
                 'slmc_no'               => $nurseData['slmc_no'] ?? null,
                 'slmc_date'             => $nurseData['slmc_date'] ?? null,
             ]);
@@ -107,6 +117,11 @@ class PermanentRegistrationController extends Controller
                 'appointment_date'      => 'nullable|date',
                 'grade'                 => 'nullable|string|max:255',
                 'present_workplace'     => 'nullable|string|max:255',
+                'address'               => 'nullable|string|max:500',
+                'batch'                 => 'nullable|string|max:100',
+                'school_university'     => 'nullable|string|max:255',
+                'birth_date'            => 'nullable|date',
+                'qualification'         => 'nullable|in:Diploma,General Nursing,BSc Nursing',
                 'slmc_no'               => 'nullable|string|max:255',
                 'slmc_date'             => 'nullable|date',
             ]);
@@ -159,8 +174,13 @@ class PermanentRegistrationController extends Controller
             'appointment_date' => 'nullable|date',
             'grade' => 'nullable|string|max:255',
             'present_workplace' => 'nullable|string|max:255',
-            'slmc_no' => 'nullable|string|max:255',
-            'slmc_date' => 'nullable|date',
+            'address'           => 'nullable|string|max:500',
+            'batch'             => 'nullable|string|max:100',
+            'school_university' => 'nullable|string|max:255',
+            'birth_date'        => 'nullable|date',
+            'qualification'     => 'nullable|in:Diploma,General Nursing,BSc Nursing',
+            'slmc_no'           => 'nullable|string|max:255',
+            'slmc_date'         => 'nullable|date',
         ]);
 
         $permanentRegistration->update($validated);

@@ -13,6 +13,10 @@ class TemporaryRegistration extends Model
         'nurse_id',
         'temp_registration_no',
         'temp_registration_date',
+        'address',
+        'batch',
+        'school_university',
+        'birth_date',
     ];
 
     public function nurse()

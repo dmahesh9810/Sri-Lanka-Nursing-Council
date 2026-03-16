@@ -60,6 +60,45 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="address" class="form-label fw-bold">Address</label>
+                            <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address', $permanentRegistration->address) }}</textarea>
+                            @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="batch" class="form-label fw-bold">Batch</label>
+                            <input type="text" class="form-control @error('batch') is-invalid @enderror" id="batch" name="batch" value="{{ old('batch', $permanentRegistration->batch) }}">
+                            @error('batch') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="school_university" class="form-label fw-bold">School or University</label>
+                            <input type="text" class="form-control @error('school_university') is-invalid @enderror" id="school_university" name="school_university" value="{{ old('school_university', $permanentRegistration->school_university) }}">
+                            @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="birth_date" class="form-label fw-bold">Birth Date</label>
+                            <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date', $permanentRegistration->birth_date) }}">
+                            @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="qualification" class="form-label fw-bold">Qualification</label>
+                            <select class="form-select @error('qualification') is-invalid @enderror" id="qualification" name="qualification">
+                                <option value="">Select Qualification</option>
+                                <option value="Diploma" @selected(old('qualification', $permanentRegistration->qualification) == 'Diploma')>Diploma</option>
+                                <option value="General Nursing" @selected(old('qualification', $permanentRegistration->qualification) == 'General Nursing')>General Nursing</option>
+                                <option value="BSc Nursing" @selected(old('qualification', $permanentRegistration->qualification) == 'BSc Nursing')>BSc Nursing</option>
+                            </select>
+                            @error('qualification') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="slmc_no" class="form-label fw-bold">SLMC No.</label>

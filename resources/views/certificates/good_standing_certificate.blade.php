@@ -6,10 +6,14 @@
     <title>Certificate of Good Standing</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Times New Roman", Times, serif; font-size: 13pt; color: #1a1a2e; background: #fff; }
-        .page { width: 210mm; min-height: 297mm; padding: 18mm 18mm 14mm 18mm; position: relative; }
-        .border-outer { border: 4px double #145a32; padding: 12mm 12mm 10mm 12mm; min-height: 265mm; position: relative; }
-        .border-inner { border: 1px solid #145a32; padding: 8mm 10mm 8mm 10mm; min-height: 249mm; }
+        @page {
+            size: A4 portrait;
+            margin: 20mm;
+        }
+        body { font-family: "Times New Roman", Times, serif; font-size: 13pt; color: #1a1a2e; background: #fff; margin:0; padding:0; }
+        .page { width: 100%; position: relative; }
+        .border-outer { border: 4px double #145a32; padding: 10mm; min-height: 230mm; position: relative; }
+        .border-inner { border: 1px solid #145a32; padding: 8mm; min-height: 210mm; }
         .org-header { text-align: center; margin-bottom: 18pt; border-bottom: 2px solid #145a32; padding-bottom: 12pt; }
         .org-emblem { font-size: 30pt; color: #145a32; }
         .org-name   { font-size: 14pt; font-weight: bold; color: #145a32; letter-spacing: 1px; text-transform: uppercase; }

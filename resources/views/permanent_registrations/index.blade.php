@@ -74,6 +74,7 @@
                             <th>NIC</th>
                             <th>Permanent Reg No.</th>
                             <th>Registration Date</th>
+                            <th>Batch</th>
                             <th>Grade</th>
                             <th>Workplace</th>
                             <th class="text-center">Actions</th>
@@ -86,6 +87,7 @@
                                 <td><span class="badge bg-secondary">{{ $reg->nurse->nic }}</span></td>
                                 <td><span class="badge bg-success">{{ $reg->perm_registration_no }}</span></td>
                                 <td>{{ \Carbon\Carbon::parse($reg->perm_registration_date)->format('d M Y') }}</td>
+                                <td>{{ $reg->batch ?: '-' }}</td>
                                 <td>{{ $reg->grade ?: '-' }}</td>
                                 <td>{{ $reg->present_workplace ?: '-' }}</td>
                                 <td class="text-center">
@@ -102,7 +104,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
+                                <td colspan="8" class="text-center py-4 text-muted">
                                     <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
                                     No permanent registrations found. @if(request('search')) Try clearing your search. @else Add a new registration to get started. @endif
                                 </td>

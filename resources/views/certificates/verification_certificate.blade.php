@@ -7,31 +7,36 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        @page {
+            size: A4 portrait;
+            margin: 20mm;
+        }
+
         body {
             font-family: "Times New Roman", Times, serif;
             font-size: 13pt;
             color: #1a1a2e;
             background: #fff;
+            margin: 0;
+            padding: 0;
         }
 
         .page {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 18mm 18mm 14mm 18mm;
+            width: 100%;
             position: relative;
         }
 
         /* ── Decorative border ────────────────────────────── */
         .border-outer {
             border: 4px double #003366;
-            padding: 12mm 12mm 10mm 12mm;
-            min-height: 265mm;
+            padding: 10mm;
+            min-height: 230mm;
             position: relative;
         }
         .border-inner {
             border: 1px solid #003366;
-            padding: 8mm 10mm 8mm 10mm;
-            min-height: 249mm;
+            padding: 8mm;
+            min-height: 210mm;
         }
 
         /* ── Organisation Header ──────────────────────────── */

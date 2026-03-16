@@ -45,6 +45,31 @@
                         </div>
                         <hr class="text-muted opacity-25">
                         <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Address</div>
+                            <div class="col-sm-7">{{ $permanentRegistration->address ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Batch</div>
+                            <div class="col-sm-7">{{ $permanentRegistration->batch ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">School or University</div>
+                            <div class="col-sm-7">{{ $permanentRegistration->school_university ?: 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Birth Date</div>
+                            <div class="col-sm-7">{{ $permanentRegistration->birth_date ? \Carbon\Carbon::parse($permanentRegistration->birth_date)->format('d M Y') : 'N/A' }}</div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
+                            <div class="col-sm-5 text-muted">Qualification</div>
+                            <div class="col-sm-7"><span class="badge bg-info text-dark">{{ $permanentRegistration->qualification ?: 'N/A' }}</span></div>
+                        </div>
+                        <hr class="text-muted opacity-25">
+                        <div class="row mb-3">
                             <div class="col-sm-5 text-muted">SLMC No.</div>
                             <div class="col-sm-7">{{ $permanentRegistration->slmc_no ?: 'N/A' }}</div>
                         </div>
