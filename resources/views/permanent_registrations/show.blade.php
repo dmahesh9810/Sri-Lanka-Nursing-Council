@@ -1,135 +1,169 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-file-earmark-text text-primary"></i> Permanent Registration Details</h2>
-            <div>
-                <a href="{{ route('permanent-registrations.index') }}" class="btn btn-outline-secondary me-2"><i class="bi bi-arrow-left"></i> Back to List</a>
-                <a href="{{ route('permanent-registrations.edit', $permanentRegistration) }}" class="btn btn-success"><i class="bi bi-pencil"></i> Edit Details</a>
+<div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 tracking-tight">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+        <div>
+            <h2 class="text-3xl font-black text-gray-900 flex items-center tracking-tighter uppercase whitespace-nowrap">
+                <i class="bi bi-award-fill text-emerald-600 mr-4"></i> Permanent Status
+            </h2>
+            <p class="text-gray-500 font-bold italic text-xs mt-1 uppercase tracking-widest opacity-80">Canonical Practitioner Registry - Official Certification</p>
+        </div>
+        <div class="flex gap-3 w-full md:w-auto">
+            <a href="{{ route('permanent-registrations.index') }}" class="flex-1 md:flex-initial inline-flex items-center justify-center px-5 py-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest rounded-2xl text-gray-700 bg-white hover:bg-gray-50 transition-all shadow-sm">
+                <i class="bi bi-arrow-left mr-2"></i> Registry List
+            </a>
+            <a href="{{ route('permanent-registrations.edit', $permanentRegistration) }}" class="flex-1 md:flex-initial inline-flex items-center justify-center px-5 py-3 border border-transparent text-[10px] font-black uppercase tracking-widest rounded-2xl text-white bg-emerald-600 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100">
+                <i class="bi bi-pencil mr-2"></i> Edit Record
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <!-- Registration Details Card -->
+        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-gray-100 border border-gray-100 overflow-hidden flex flex-col h-full">
+            <div class="px-8 py-6 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
+                <h5 class="text-sm font-black text-emerald-900 uppercase tracking-widest flex items-center gap-2 italic">
+                    <i class="bi bi-shield-check text-emerald-600"></i> Lifetime Certification
+                </h5>
+                <span class="text-[10px] font-black text-gray-400 italic">VERIFIED</span>
+            </div>
+            
+            <div class="p-8 space-y-8 flex-grow">
+                <div class="group">
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 group-hover:text-emerald-500 transition-colors">Permanent Ledger Serial</div>
+                    <div class="text-2xl font-black text-gray-900 bg-emerald-50 inline-block px-4 py-1.5 rounded-2xl border border-emerald-100 shadow-inner tracking-widest">
+                        {{ $permanentRegistration->perm_registration_no }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-gray-50 pt-8">
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Registration Date</div>
+                        <div class="text-base font-bold text-gray-800">{{ \Carbon\Carbon::parse($permanentRegistration->perm_registration_date)->format('d M Y') }}</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Appointment Authorization</div>
+                        <div class="text-base font-bold text-gray-800">{{ $permanentRegistration->appointment_date ? \Carbon\Carbon::parse($permanentRegistration->appointment_date)->format('d M Y') : 'N/A' }}</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-gray-50 pt-8">
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Grade Level</div>
+                        <div class="text-base font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-100 inline-block">{{ $permanentRegistration->grade ?: 'N/A' }}</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Active Workplace</div>
+                        <div class="text-base font-bold text-gray-800 truncate" title="{{ $permanentRegistration->present_workplace }}">{{ $permanentRegistration->present_workplace ?: 'N/A' }}</div>
+                    </div>
+                </div>
+
+                <div class="group border-t border-gray-50 pt-8">
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Primary Credential Address</div>
+                    <div class="text-base font-bold text-gray-800 leading-relaxed">{{ $permanentRegistration->address ?: 'N/A' }}</div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-gray-50 pt-8">
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Cohort / Batch</div>
+                        <div class="text-base font-bold text-gray-800">{{ $permanentRegistration->batch ?: 'N/A' }}</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">Primary Qualification</div>
+                        <span class="inline-flex px-3 py-1 rounded-xl bg-blue-50 border border-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-tight">{{ $permanentRegistration->qualification ?: 'N/A' }}</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-gray-50 pt-8">
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">SLMC Identification</div>
+                        <div class="text-base font-bold text-gray-800">{{ $permanentRegistration->slmc_no ?: 'N/A' }}</div>
+                    </div>
+                    <div class="group">
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-emerald-500 transition-colors italic">SLMC Authorization Date</div>
+                        <div class="text-base font-bold text-gray-800 italic">{{ $permanentRegistration->slmc_date ? \Carbon\Carbon::parse($permanentRegistration->slmc_date)->format('d M Y') : 'N/A' }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-8 py-5 bg-gray-50/30 border-t border-gray-50 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">
+                <span>Created: {{ $permanentRegistration->created_at->format('d M Y') }}</span>
+                <span>ID: #PR{{ str_pad($permanentRegistration->id, 5, '0', STR_PAD_LEFT) }}</span>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <!-- Registration Info -->
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom py-3">
-                        <h5 class="mb-0 text-success"><i class="bi bi-award"></i> Registration Overview</h5>
+        <!-- Practitioner Persona Card -->
+        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100 border border-indigo-50 overflow-hidden flex flex-col h-full ring-4 ring-indigo-50/50">
+            <div class="px-8 py-6 border-b border-indigo-50 bg-indigo-50/10 flex items-center justify-between">
+                <h5 class="text-sm font-black text-indigo-900 uppercase tracking-widest flex items-center gap-2">
+                    <i class="bi bi-person-badge text-indigo-600"></i> Associated Practitioner
+                </h5>
+                <a href="{{ route('nurses.show', $permanentRegistration->nurse) }}" class="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline decoration-2 underline-offset-4 transition-all whitespace-nowrap">
+                    Canonical Identity <i class="bi bi-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="p-10 space-y-10 flex-grow bg-gradient-to-br from-white to-indigo-50/30">
+                <div class="flex items-start gap-6">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-3xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                        <i class="bi bi-person-bounding-box text-3xl"></i>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Permanent Reg No.</div>
-                            <div class="col-sm-7 fw-bold"><span class="badge bg-success fs-6">{{ $permanentRegistration->perm_registration_no }}</span></div>
+                    <div>
+                        <h4 class="text-2xl font-black text-gray-900 tracking-tighter uppercase leading-tight">{{ $permanentRegistration->nurse->name }}</h4>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-[10px] font-black text-indigo-600 uppercase bg-indigo-100 px-3 py-1 rounded-xl tracking-tighter">Unified NIC</span>
+                            <span class="text-sm font-black text-gray-800 tracking-widest">{{ $permanentRegistration->nurse->nic }}</span>
                         </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Registration Date</div>
-                            <div class="col-sm-7 fw-bold">{{ \Carbon\Carbon::parse($permanentRegistration->perm_registration_date)->format('d M Y') }}</div>
+                    </div>
+                </div>
+
+                <div class="space-y-6 pt-8 border-t border-indigo-100">
+                    <div class="grid grid-cols-2 gap-10">
+                        <div class="group">
+                            <div class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1 italic">Contact Terminal</div>
+                            <div class="text-base text-gray-900 font-bold font-mono">{{ $permanentRegistration->nurse->phone ?: 'N/A' }}</div>
                         </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Appointment Date</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->appointment_date ? \Carbon\Carbon::parse($permanentRegistration->appointment_date)->format('d M Y') : 'N/A' }}</div>
+                        <div class="group">
+                            <div class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1 italic">Cohort Cycle</div>
+                            <div class="text-base text-gray-900 font-bold italic">{{ $permanentRegistration->nurse->batch ?: 'N/A' }}</div>
                         </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Grade</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->grade ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Present Workplace</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->present_workplace ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Address</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->address ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Batch</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->batch ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">School or University</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->school_university ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Birth Date</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->birth_date ? \Carbon\Carbon::parse($permanentRegistration->birth_date)->format('d M Y') : 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Qualification</div>
-                            <div class="col-sm-7"><span class="badge bg-info text-dark">{{ $permanentRegistration->qualification ?: 'N/A' }}</span></div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">SLMC No.</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->slmc_no ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">SLMC Date</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->slmc_date ? \Carbon\Carbon::parse($permanentRegistration->slmc_date)->format('d M Y') : 'N/A' }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row mb-3">
-                            <div class="col-sm-5 text-muted">Record Created</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->created_at->format('d M Y H:i A') }}</div>
-                        </div>
-                        <hr class="text-muted opacity-25">
-                        <div class="row">
-                            <div class="col-sm-5 text-muted">Last Updated</div>
-                            <div class="col-sm-7">{{ $permanentRegistration->updated_at->format('d M Y H:i A') }}</div>
-                        </div>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1 italic">Primary Institution</div>
+                        <div class="text-base text-gray-900 font-bold leading-relaxed">{{ $permanentRegistration->nurse->school_or_university ?: 'N/A' }}</div>
+                    </div>
+
+                    <div class="group pt-6 border-t border-indigo-50/50">
+                        <div class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3 italic">Preliminary Registration Protocol</div>
+                        @if($permanentRegistration->nurse->temporaryRegistration)
+                            <div class="flex items-center gap-4 bg-indigo-600/5 p-4 rounded-2xl border border-indigo-100">
+                                <i class="bi bi-file-earmark-medical text-indigo-600 text-xl"></i>
+                                <div>
+                                    <div class="text-xs font-black text-indigo-900 tracking-tight">{{ $permanentRegistration->nurse->temporaryRegistration->temp_registration_no }}</div>
+                                    <div class="text-[9px] font-bold text-indigo-400 uppercase tracking-widest italic">Authorized on {{ \Carbon\Carbon::parse($permanentRegistration->nurse->temporaryRegistration->temp_registration_date)->format('d M Y') }}</div>
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex items-center gap-4 bg-red-50 p-4 rounded-2xl border border-red-100">
+                                <i class="bi bi-exclamation-octagon text-red-500 text-xl"></i>
+                                <span class="text-[10px] font-black text-red-700 uppercase tracking-widest italic">Non-Preliminary Issuance</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <!-- Nurse Profile -->
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 text-info"><i class="bi bi-person-badge"></i> Associated Nurse</h5>
-                        <a href="{{ route('nurses.show', $permanentRegistration->nurse) }}" class="btn btn-sm btn-outline-info">View Full Profile</a>
-                    </div>
-                    <div class="card-body p-4 bg-info bg-opacity-10">
-                        <div class="row mb-3">
-                            <div class="col-sm-4 text-muted">Name</div>
-                            <div class="col-sm-8 fw-bold">{{ $permanentRegistration->nurse->name }}</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-4 text-muted">NIC</div>
-                            <div class="col-sm-8"><span class="badge bg-secondary">{{ $permanentRegistration->nurse->nic }}</span></div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-4 text-muted">Phone</div>
-                            <div class="col-sm-8">{{ $permanentRegistration->nurse->phone ?: 'N/A' }}</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-4 text-muted">Batch</div>
-                            <div class="col-sm-8">{{ $permanentRegistration->nurse->batch ?: 'N/A' }}</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-4 text-muted">School</div>
-                            <div class="col-sm-8 text-truncate" title="{{ $permanentRegistration->nurse->school_or_university }}">{{ $permanentRegistration->nurse->school_or_university ?: 'N/A' }}</div>
-                        </div>
-                        <hr class="border-info">
-                        <div class="row">
-                            <div class="col-sm-4 text-muted">Temp Reg No.</div>
-                            <div class="col-sm-8"><span class="badge bg-primary">{{ $permanentRegistration->nurse->temporaryRegistration ? $permanentRegistration->nurse->temporaryRegistration->temp_registration_no : 'Missing' }}</span></div>
-                        </div>
-                    </div>
+            <div class="p-8 mt-auto">
+                <div class="bg-indigo-600/5 p-5 rounded-3xl border border-indigo-100/50 flex items-start gap-4">
+                    <i class="bi bi-check-circle-fill text-indigo-600 text-xl mt-1"></i>
+                    <p class="text-[10px] font-bold text-indigo-900 leading-relaxed uppercase tracking-tight italic">
+                        This permanent status record is cryptographically synchronized with the SLNC Master Registry. Any unauthorized modifications to this blockchain-linked record are prohibited undere Article 42 of the Medical Ordinance.
+                    </p>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @endsection

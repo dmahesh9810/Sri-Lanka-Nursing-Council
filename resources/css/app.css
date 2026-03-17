@@ -9,3 +9,24 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    /* Scoped icon sizing */
+    svg.icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Standardize pagination arrows (Laravel/Tailwind default) */
+    nav[role="navigation"] svg {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+    }
+
+    /* High-fidelity QR code display */
+    .qr-code svg {
+        width: 280px !important;
+        height: 280px !important;
+    }
+}

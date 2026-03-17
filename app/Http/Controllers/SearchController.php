@@ -18,8 +18,8 @@ class SearchController extends Controller
 
         $nic = trim($request->input('q'));
         
-        // Remove spaces or basic normalization if needed
-        $nic = str_replace(' ', '', $nic);
+        // Normalize NIC: remove spaces and convert to uppercase for consistency
+        $nic = strtoupper(str_replace(' ', '', $nic));
 
         $nurse = Nurse::where('nic', $nic)->first();
 

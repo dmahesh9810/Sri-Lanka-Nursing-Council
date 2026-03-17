@@ -14,6 +14,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        \Illuminate\Support\Facades\Log::info('Dashboard Access Attempt:', [
+            'user' => auth()->user()->email,
+            'role' => auth()->user()->role
+        ]);
         $stats = [
             'total_nurses' => Nurse::count(),
             'total_temporary' => TemporaryRegistration::count(),

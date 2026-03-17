@@ -3,295 +3,334 @@
 @section('content')
 
 {{-- Page Header --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
     <div>
-        <h2 class="mb-0"><i class="bi bi-speedometer2 text-primary me-2"></i>Admin Dashboard</h2>
-        <p class="text-muted mb-0 mt-1">Sri Lanka Nursing Council &mdash; System Overview</p>
+        <h2 class="text-3xl font-extrabold text-gray-900 flex items-center">
+            <i class="bi bi-speedometer2 text-blue-600 mr-3"></i> Admin Dashboard
+        </h2>
+        <p class="text-gray-500 mt-1 font-medium italic">Sri Lanka Nursing Council &middot; System Intelligence Hub</p>
     </div>
-    <span class="text-muted small"><i class="bi bi-clock me-1"></i>{{ now()->format('d M Y, H:i A') }}</span>
+    <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 flex items-center text-sm font-semibold text-gray-600">
+        <i class="bi bi-clock text-blue-500 mr-2"></i> {{ now()->format('D, d M Y | H:i A') }}
+    </div>
 </div>
 
 {{-- Stats Grid --}}
-<div class="row g-4 mb-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
 
     {{-- Total Nurses --}}
-    <div class="col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #0d6efd !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(13,110,253,.12);">
-                    <i class="bi bi-people-fill fs-4 text-primary"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold letter-spacing-1">Total Nurses</div>
-                    <div class="display-6 fw-bold text-primary">{{ number_format($stats['total_nurses']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-people-fill text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('nurses.index') }}" class="text-decoration-none small text-primary fw-semibold">
-                    <i class="bi bi-arrow-right-circle me-1"></i>View Nurses
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Nurses</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_nurses']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('nurses.index') }}" class="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center">
+                Explore Register <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
     {{-- Temporary Registrations --}}
-    <div class="col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #0dcaf0 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(13,202,240,.12);">
-                    <i class="bi bi-hourglass-split fs-4 text-info"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Temp. Registrations</div>
-                    <div class="display-6 fw-bold text-info">{{ number_format($stats['total_temporary']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User1', 'User2'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-600 border border-cyan-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-hourglass-split text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('temporary-registrations.index') }}" class="text-decoration-none small text-info fw-semibold">
-                    <i class="bi bi-arrow-right-circle me-1"></i>View Registrations
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Temp. Registrations</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_temporary']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('temporary-registrations.index') }}" class="text-sm font-bold text-cyan-600 hover:text-cyan-800 flex items-center">
+                Manage Temp <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
     {{-- Permanent Registrations --}}
-    <div class="col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #198754 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(25,135,84,.12);">
-                    <i class="bi bi-patch-check-fill fs-4 text-success"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Perm. Registrations</div>
-                    <div class="display-6 fw-bold text-success">{{ number_format($stats['total_permanent']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User2', 'User3', 'User4', 'User5'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-patch-check-fill text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('permanent-registrations.index') }}" class="text-decoration-none small text-success fw-semibold">
-                    <i class="bi bi-arrow-right-circle me-1"></i>View Registrations
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Perm. Registrations</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_permanent']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('permanent-registrations.index') }}" class="text-sm font-bold text-emerald-600 hover:text-emerald-800 flex items-center">
+                Manage Perm <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
     {{-- Additional Qualifications --}}
-    <div class="col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #6f42c1 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(111,66,193,.12);">
-                    <i class="bi bi-award-fill fs-4" style="color:#6f42c1;"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Add. Qualifications</div>
-                    <div class="display-6 fw-bold" style="color:#6f42c1;">{{ number_format($stats['total_qualifications']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User4'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 border border-purple-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-award-fill text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('additional-qualifications.index') }}" class="text-decoration-none small fw-semibold" style="color:#6f42c1;">
-                    <i class="bi bi-arrow-right-circle me-1"></i>View Qualifications
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Qualifications</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_qualifications']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('additional-qualifications.index') }}" class="text-sm font-bold text-purple-600 hover:text-purple-800 flex items-center">
+                Review Assets <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
     {{-- Foreign Certificate Requests --}}
-    <div class="col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #fd7e14 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(253,126,20,.12);">
-                    <i class="bi bi-globe-americas fs-4" style="color:#fd7e14;"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Foreign Cert. Requests</div>
-                    <div class="display-6 fw-bold" style="color:#fd7e14;">{{ number_format($stats['total_foreign_certificates']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User5'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 border border-orange-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-globe-americas text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('foreign-certificates.index') }}" class="text-decoration-none small fw-semibold" style="color:#fd7e14;">
-                    <i class="bi bi-arrow-right-circle me-1"></i>View Certificates
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Foreign Certs</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_foreign_certificates']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('foreign-certificates.index') }}" class="text-sm font-bold text-orange-600 hover:text-orange-800 flex items-center">
+                Global Gateway <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
-    {{-- Certificates Printed --}}
-    <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #20c997 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(32,201,151,.12);">
-                    <i class="bi bi-printer-fill fs-4" style="color:#20c997;"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Foreign Certs Printed</div>
-                    <div class="display-6 fw-bold" style="color:#20c997;">{{ number_format($stats['total_printed']) }}</div>
-                </div>
+    {{-- Certificates Printed (Foreign) --}}
+    @if(auth()->user()->hasRole('Admin', 'User5'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 border border-teal-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-printer-fill text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Certs Printed</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_printed']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+             <span class="text-xs text-gray-500 italic">Total verified printouts</span>
+        </div>
     </div>
+    @endif
 
     {{-- Perm Certificates Printed --}}
-    <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #e83e8c !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(232,62,140,.12);">
-                    <i class="bi bi-file-earmark-person-fill fs-4" style="color:#e83e8c;"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Perm Certs Printed</div>
-                    <div class="display-6 fw-bold" style="color:#e83e8c;">{{ number_format($stats['total_perm_certificates_printed']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User3'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-600 border border-pink-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-file-earmark-person-fill text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('permanent-certificates.index') }}" class="text-decoration-none small fw-semibold" style="color:#e83e8c;">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Issue & Print
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Perm Certs Issued</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_perm_certificates_printed']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('permanent-certificates.index') }}" class="text-sm font-bold text-pink-600 hover:text-pink-800 flex items-center">
+                Issue Queue <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
     {{-- Total Reports Generated --}}
-    <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ef4444 !important;">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:56px;height:56px;background:rgba(239,68,68,.12);">
-                    <i class="bi bi-file-earmark-pdf-fill fs-4" style="color:#ef4444;"></i>
-                </div>
-                <div>
-                    <div class="text-muted small text-uppercase fw-semibold">Reports Generated</div>
-                    <div class="display-6 fw-bold" style="color:#ef4444;">{{ number_format($stats['total_reports_generated']) }}</div>
-                </div>
+    @if(auth()->user()->hasRole('Admin', 'User1', 'User2', 'User3', 'User4', 'User5'))
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden group">
+        <div class="p-6 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 border border-rose-100 group-hover:scale-110 transition-transform">
+                <i class="bi bi-file-earmark-pdf-fill text-2xl"></i>
             </div>
-            <div class="card-footer bg-white border-top py-2 px-4">
-                <a href="{{ route('reports.index') }}" class="text-decoration-none small fw-semibold" style="color:#ef4444;">
-                    <i class="bi bi-arrow-right-circle me-1"></i>Generate Report
-                </a>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest text-nowrap">Reports Built</p>
+                <h3 class="text-3xl font-black text-gray-900">{{ number_format($stats['total_reports_generated']) }}</h3>
             </div>
         </div>
+        <div class="px-6 py-3 bg-gray-50 border-t border-gray-50">
+            <a href="{{ route('reports.index') }}" class="text-sm font-bold text-rose-600 hover:text-rose-800 flex items-center">
+                Data Studio <i class="bi bi-arrow-right ml-1"></i>
+            </a>
+        </div>
     </div>
+    @endif
 
 </div>
 
 {{-- Charts Section --}}
-<div class="row g-4 mb-4">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
     {{-- Chart 1: Monthly Temp Registrations --}}
-    <div class="col-xl-6">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-bottom py-3">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-bar-chart-fill text-info me-2"></i>Monthly Temp. Registrations (12 Months)</h6>
-            </div>
-            <div class="card-body">
-                <canvas id="tempChart" height="250"></canvas>
-            </div>
+    @if(auth()->user()->hasRole('Admin', 'User1', 'User2'))
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+            <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                <i class="bi bi-bar-chart-fill text-cyan-500 mr-2"></i> Monthly Temp. Registrations
+            </h6>
+            <span class="text-xs text-gray-400 font-medium italic">Past 12 Months</span>
+        </div>
+        <div class="h-[300px]">
+            <canvas id="tempChart"></canvas>
         </div>
     </div>
+    @endif
 
     {{-- Chart 2: Monthly Perm Registrations --}}
-    <div class="col-xl-6">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-bottom py-3">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-graph-up-arrow text-success me-2"></i>Monthly Perm. Registrations (12 Months)</h6>
-            </div>
-            <div class="card-body">
-                <canvas id="permChart" height="250"></canvas>
-            </div>
+    @if(auth()->user()->hasRole('Admin', 'User2', 'User3', 'User4', 'User5'))
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+            <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                <i class="bi bi-graph-up-arrow text-emerald-500 mr-2"></i> Monthly Perm. Registrations
+            </h6>
+            <span class="text-xs text-gray-400 font-medium italic">Growth Trend</span>
+        </div>
+        <div class="h-[300px]">
+            <canvas id="permChart"></canvas>
         </div>
     </div>
+    @endif
 
     {{-- Chart 3: Foreign Certs by Country --}}
-    <div class="col-xl-6">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-bottom py-3">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-pie-chart-fill text-warning me-2"></i>Foreign Certificates by Country</h6>
-            </div>
-            <div class="card-body d-flex justify-content-center">
-                <div style="height: 300px; width: 100%;">
-                    <canvas id="countryChart"></canvas>
-                </div>
-            </div>
+    @if(auth()->user()->hasRole('Admin', 'User5'))
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+            <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                <i class="bi bi-pie-chart-fill text-orange-500 mr-2"></i> Global Distribution
+            </h6>
+            <span class="text-xs text-gray-400 font-medium italic">By Country</span>
+        </div>
+        <div class="h-[350px] flex items-center justify-center">
+            <canvas id="countryChart"></canvas>
         </div>
     </div>
+    @endif
 
     {{-- Chart 4: Certs Printed vs Pending --}}
-    <div class="col-xl-6">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-bottom py-3">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-printer-fill text-primary me-2"></i>Foreign Certs Print Status</h6>
-            </div>
-            <div class="card-body d-flex justify-content-center">
-                <div style="height: 300px; width: 100%;">
-                    <canvas id="certStatusChart"></canvas>
-                </div>
-            </div>
+    @if(auth()->user()->hasRole('Admin', 'User5'))
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+            <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                <i class="bi bi-printer-fill text-blue-500 mr-2"></i> Operational Status
+            </h6>
+            <span class="text-xs text-gray-400 font-medium italic">Issue Progress</span>
+        </div>
+        <div class="h-[350px] flex items-center justify-center">
+            <canvas id="certStatusChart"></canvas>
         </div>
     </div>
+    @endif
 </div>
 
 {{-- Recent Activity --}}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-bottom py-3">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-clock-history text-primary me-2"></i>Recent Activity</h6>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
+                <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                    <i class="bi bi-clock-history text-blue-500 mr-2"></i> Audit Log
+                </h6>
+                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-black uppercase rounded-full tracking-tighter">Live Activity</span>
             </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    @forelse($recentActivities as $activity)
-                        <li class="list-group-item px-4 py-3">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1 fw-bold text-dark">{{ $activity->action }}</h6>
-                                    <p class="mb-0 text-muted small">{{ $activity->description }}</p>
-                                    @if($activity->user)
-                                        <div class="small text-primary mt-1"><i class="bi bi-person-circle me-1"></i>{{ $activity->user->name }}</div>
-                                    @endif
-                                </div>
-                                <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ $activity->created_at->diffForHumans() }}</small>
+            <div class="divide-y divide-gray-50">
+                @forelse($recentActivities as $activity)
+                    <div class="px-6 py-5 hover:bg-gray-50 transition-colors flex items-start gap-4">
+                        <div class="mt-1 w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-200 shrink-0">
+                             <i class="bi {{ str_contains(strtolower($activity->action), 'create') ? 'bi-plus-circle-fill text-emerald-500' : 'bi-lightning-fill text-blue-500' }}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-1">
+                                <h6 class="text-sm font-bold text-gray-900 truncate">{{ $activity->action }}</h6>
+                                <span class="text-[11px] font-semibold text-gray-400 whitespace-nowrap"><i class="bi bi-clock mr-1"></i>{{ $activity->created_at->diffForHumans() }}</span>
                             </div>
-                        </li>
-                    @empty
-                        <li class="list-group-item px-4 py-4 text-center text-muted">
-                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
-                            No recent activity found.
-                        </li>
-                    @endforelse
-                </ul>
+                            <p class="text-xs text-gray-500 line-clamp-2 italic font-medium">"{{ $activity->description }}"</p>
+                            @if($activity->user)
+                                <div class="mt-3 flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-[10px] text-white font-bold">
+                                        {{ substr($activity->user->name, 0, 1) }}
+                                    </div>
+                                    <span class="text-[11px] font-bold text-blue-600 capitalize">{{ $activity->user->name }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="px-6 py-12 text-center text-gray-400">
+                        <i class="bi bi-inbox text-4xl block mb-4 text-gray-200"></i>
+                        <span class="text-sm font-medium">Digital silence. No recent records found.</span>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
-</div>
 
-{{-- Quick Navigation --}}
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-bottom py-3">
-        <h6 class="mb-0 fw-bold text-secondary"><i class="bi bi-lightning-charge text-warning me-2"></i>Quick Navigation</h6>
-    </div>
-    <div class="card-body">
-        <div class="d-flex flex-wrap gap-2">
-            <a href="{{ route('nurses.create') }}" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Nurse
-            </a>
-            <a href="{{ route('temporary-registrations.create') }}" class="btn btn-outline-info btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Temp. Registration
-            </a>
-            <a href="{{ route('permanent-registrations.create') }}" class="btn btn-outline-success btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Perm. Registration
-            </a>
-            <a href="{{ route('additional-qualifications.create') }}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Qualification
-            </a>
-            <a href="{{ route('foreign-certificates.create') }}" class="btn btn-outline-warning btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Certificate Request
-            </a>
+    {{-- Quick Navigation --}}
+    @if(auth()->user()->hasRole('Admin', 'User1', 'User2', 'User3', 'User4', 'User5'))
+    <div class="space-y-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-50 bg-gray-50/50">
+                <h6 class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center">
+                    <i class="bi bi-lightning-charge text-orange-500 mr-2"></i> Fast Action Bar
+                </h6>
+            </div>
+            <div class="p-6 space-y-3">
+                @if(auth()->user()->hasRole('Admin'))
+                <a href="{{ route('nurses.create') }}" class="flex items-center justify-between p-3 rounded-xl border border-blue-100 bg-blue-50/30 text-blue-700 hover:bg-blue-50 transition-all font-bold text-xs">
+                    <span>New Nurse Profile</span>
+                    <i class="bi bi-plus-circle-fill"></i>
+                </a>
+                @endif
+                
+                @if(auth()->user()->hasRole('Admin', 'User1', 'User2'))
+                <a href="{{ route('temporary-registrations.create') }}" class="flex items-center justify-between p-3 rounded-xl border border-cyan-100 bg-cyan-50/30 text-cyan-700 hover:bg-cyan-50 transition-all font-bold text-xs">
+                    <span>Temp Registration</span>
+                    <i class="bi bi-plus-circle-fill"></i>
+                </a>
+                @endif
+                
+                @if(auth()->user()->hasRole('Admin', 'User2', 'User3', 'User4', 'User5'))
+                <a href="{{ route('permanent-registrations.create') }}" class="flex items-center justify-between p-3 rounded-xl border border-emerald-100 bg-emerald-50/30 text-emerald-700 hover:bg-emerald-50 transition-all font-bold text-xs">
+                    <span>Perm Registration</span>
+                    <i class="bi bi-plus-circle-fill"></i>
+                </a>
+                @endif
+                
+                @if(auth()->user()->hasRole('Admin', 'User4'))
+                <a href="{{ route('additional-qualifications.create') }}" class="flex items-center justify-between p-3 rounded-xl border border-purple-100 bg-purple-50/30 text-purple-700 hover:bg-purple-50 transition-all font-bold text-xs">
+                    <span>New Qualification</span>
+                    <i class="bi bi-plus-circle-fill"></i>
+                </a>
+                @endif
+                
+                @if(auth()->user()->hasRole('Admin', 'User5'))
+                <a href="{{ route('foreign-certificates.create') }}" class="flex items-center justify-between p-3 rounded-xl border border-orange-100 bg-orange-50/30 text-orange-700 hover:bg-orange-50 transition-all font-bold text-xs">
+                    <span>Global Request</span>
+                    <i class="bi bi-plus-circle-fill"></i>
+                </a>
+                @endif
+            </div>
         </div>
     </div>
+    @endif
 </div>
 
 {{-- Chart.js Scripts --}}
@@ -299,8 +338,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Shared styling
-    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-    Chart.defaults.color = '#6c757d';
+    Chart.defaults.font.family = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#94a3b8';
 
     // Chart 1: Temp Registrations (Bar)
     var ctxTemp = document.getElementById('tempChart').getContext('2d');
@@ -311,22 +351,33 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Temp Registrations',
                 data: {!! json_encode($charts['temp_data'] ?? []) !!},
-                backgroundColor: 'rgba(13, 202, 240, 0.7)',
-                borderColor: '#0dcaf0',
-                borderWidth: 1,
-                borderRadius: 4
+                backgroundColor: '#06b6d4',
+                hoverBackgroundColor: '#0891b2',
+                borderRadius: 8,
+                maxBarThickness: 30
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: '#f1f5f9' },
+                    ticks: { stepSize: 1, color: '#64748b' } 
+                },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+            },
             plugins: { legend: { display: false } }
         }
     });
 
     // Chart 2: Perm Registrations (Line)
     var ctxPerm = document.getElementById('permChart').getContext('2d');
+    var gradientPerm = ctxPerm.createLinearGradient(0, 0, 0, 300);
+    gradientPerm.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+    gradientPerm.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
     new Chart(ctxPerm, {
         type: 'line',
         data: {
@@ -334,18 +385,29 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Perm Registrations',
                 data: {!! json_encode($charts['perm_data'] ?? []) !!},
-                backgroundColor: 'rgba(25, 135, 84, 0.2)',
-                borderColor: '#198754',
-                borderWidth: 2,
-                tension: 0.3,
+                backgroundColor: gradientPerm,
+                borderColor: '#10b981',
+                borderWidth: 3,
+                tension: 0.4,
                 fill: true,
-                pointBackgroundColor: '#198754'
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#10b981',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: '#f1f5f9' },
+                    ticks: { stepSize: 1, color: '#64748b' } 
+                },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+            },
             plugins: { legend: { display: false } }
         }
     });
@@ -359,17 +421,21 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: {!! json_encode($charts['country_data'] ?? []) !!},
                 backgroundColor: [
-                    '#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#dc3545',
-                    '#fd7e14', '#ffc107', '#198754', '#20c997', '#0dcaf0'
+                    '#3b82f6', '#8b5cf6', '#a855f7', '#ec4899', '#ef4444',
+                    '#f97316', '#eab308', '#10b981', '#14b8a6', '#06b6d4'
                 ],
-                borderWidth: 1
+                borderWidth: 0,
+                cutout: '75%'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'right' }
+                legend: { 
+                    position: 'bottom',
+                    labels: { boxWidth: 12, padding: 20, usePointStyle: true }
+                }
             }
         }
     });
@@ -382,15 +448,18 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: {!! json_encode($charts['cert_status_labels'] ?? []) !!},
             datasets: [{
                 data: {!! json_encode($charts['cert_status_data'] ?? []) !!},
-                backgroundColor: ['#20c997', '#6c757d'],
-                borderWidth: 1
+                backgroundColor: ['#14b8a6', '#94a3b8'],
+                borderWidth: 0
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom' }
+                legend: { 
+                    position: 'bottom',
+                    labels: { boxWidth: 12, padding: 20, usePointStyle: true }
+                }
             }
         }
     });

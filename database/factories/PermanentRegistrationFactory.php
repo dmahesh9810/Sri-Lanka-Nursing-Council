@@ -24,6 +24,11 @@ class PermanentRegistrationFactory extends Factory
             'present_workplace' => fake()->company(),
             'slmc_no' => fake()->numerify('SLMC-#####'),
             'slmc_date' => fake()->date('Y-m-d'),
+            'address' => fake()->address(),
+            'batch' => fake()->numerify('20##-20##'),
+            'school_university' => fake()->randomElement(['School of Nursing Colombo', 'School of Nursing Kandy', 'University of Peradeniya', 'KAATU Nursing School']),
+            'birth_date' => fake()->date('Y-m-d', '-20 years'),
+            'qualification' => fake()->randomElement(['Diploma', 'General Nursing', 'BSc Nursing']),
         ];
     }
 }

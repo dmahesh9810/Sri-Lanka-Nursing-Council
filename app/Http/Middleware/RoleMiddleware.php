@@ -19,7 +19,14 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        if (in_array(auth()->user()->role, $roles)) {
+        \Illuminate\Support\Facades\Log::info('Role Check:', [
+            'user_email' => auth()->user()->email,
+            'user_role' => auth()->user()->role,
+            'required_roles' => $roles,
+            'match' => in_array(auth()->user()->role, $roles)
+        ]);
+
+        if (auth()->user()->hasRole(...$roles)) {
             return $next($request);
         }
 
