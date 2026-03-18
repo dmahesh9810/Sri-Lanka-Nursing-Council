@@ -24,7 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
     Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('global.search');
 
-    Route::middleware('role:1')->group(function () {
+    // Reports: accessible by all roles (1–6); module-level filtering is enforced in ReportController
+    Route::middleware('role:1,2,3,4,5,6')->group(function () {
         Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
         Route::post('/reports/generate', [\App\Http\Controllers\ReportController::class, 'generate'])->name('reports.generate');
     });

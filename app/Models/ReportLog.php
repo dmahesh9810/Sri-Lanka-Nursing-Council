@@ -9,5 +9,10 @@ class ReportLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['module', 'period'];
+    protected $fillable = ['user_id', 'module', 'period'];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 }

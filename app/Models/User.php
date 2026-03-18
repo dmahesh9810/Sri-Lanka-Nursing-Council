@@ -58,4 +58,23 @@ class User extends Authenticatable
     {
         return in_array($this->role, $roles);
     }
+
+    /**
+     * Return the list of report module slugs this user is permitted to generate.
+     * This is the single source of truth for report-level RBAC.
+     *
+     * @return array<string>
+     */
+    public function allowedReportModules(): array
+    {
+        return match ($this->role) {
+            self::ROLE_ADMIN  => ['temporary', 'permanent', 'qualifications', 'foreign'],
+            self::ROLE_USER1  => ['temporary'],
+            self::ROLE_USER2  => ['temporary', 'permanent'],
+            self::ROLE_USER3  => ['permanent'],
+            self::ROLE_USER4  => ['permanent', 'qualifications'],
+            self::ROLE_USER5  => ['permanent', 'foreign'],
+            default           => [],
+        };
+    }
 }
