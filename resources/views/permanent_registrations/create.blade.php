@@ -14,7 +14,7 @@
             <!-- Step 1: Search Nurse by NIC -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-success text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Nurse for Permanent Registration</h5>
+                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Temporary Registered Nurse</h5>
                 </div>
                 <div class="card-body p-4 bg-white">
                     <form action="{{ route('permanent-registrations.create') }}" method="GET">
@@ -65,7 +65,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="new_phone" class="form-label fw-bold">Phone</label>
-                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}">
+                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="new_gender" class="form-label fw-bold">Gender</label>
@@ -95,7 +95,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="grade_modal" class="form-label fw-bold">Grade</label>
-                                        <input type="text" class="form-control" id="grade_modal" name="grade" value="{{ old('grade') }}">
+                                        <select class="form-select" id="grade_modal" name="grade">
+                                            <option value="">Select Grade</option>
+                                            @foreach(['Grade III', 'Grade II', 'Grade I', 'Supra', 'CNO', 'None'] as $g)
+                                                <option value="{{ $g }}" @selected(old('grade') == $g)>{{ $g }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -117,7 +122,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="school_university_modal" class="form-label fw-bold">School or University</label>
-                                        <input type="text" class="form-control" id="school_university_modal" name="school_university" value="{{ old('school_university') }}">
+                                        <select class="form-select" id="school_university_modal" name="school_university">
+                                            <option value="">Select School or University</option>
+                                            @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                                <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -219,7 +229,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="grade" class="form-label fw-bold">Grade</label>
-                                <input type="text" class="form-control @error('grade') is-invalid @enderror" id="grade" name="grade" value="{{ old('grade') }}">
+                                <select class="form-select @error('grade') is-invalid @enderror" id="grade" name="grade">
+                                    <option value="">Select Grade</option>
+                                    @foreach(['Grade III', 'Grade II', 'Grade I', 'Supra', 'CNO', 'None'] as $g)
+                                        <option value="{{ $g }}" @selected(old('grade') == $g)>{{ $g }}</option>
+                                    @endforeach
+                                </select>
                                 @error('grade') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -248,7 +263,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="school_university" class="form-label fw-bold">School or University</label>
-                                <input type="text" class="form-control @error('school_university') is-invalid @enderror" id="school_university" name="school_university" value="{{ old('school_university') }}">
+                                <select class="form-select @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
+                                    <option value="">Select School or University</option>
+                                    @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                        <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                    @endforeach
+                                </select>
                                 @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>

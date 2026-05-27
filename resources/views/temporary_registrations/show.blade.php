@@ -67,7 +67,6 @@
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-info"><i class="bi bi-person-badge"></i> Associated Nurse</h5>
-                        <a href="{{ route('nurses.show', $temporaryRegistration->nurse) }}" class="btn btn-sm btn-outline-info">View Full Profile</a>
                     </div>
                     <div class="card-body p-4 bg-info bg-opacity-10">
                         <div class="row mb-3">
@@ -84,11 +83,15 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4 text-muted">Batch</div>
-                            <div class="col-sm-8">{{ $temporaryRegistration->nurse->batch ?: 'N/A' }}</div>
+                            <div class="col-sm-8">{{ $temporaryRegistration->nurse->batch ?: ($temporaryRegistration->batch ?: 'N/A') }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">School</div>
+                            <div class="col-sm-8 text-truncate" title="{{ $temporaryRegistration->nurse->school_or_university ?: $temporaryRegistration->school_university }}">{{ $temporaryRegistration->nurse->school_or_university ?: ($temporaryRegistration->school_university ?: 'N/A') }}</div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4 text-muted">School</div>
-                            <div class="col-sm-8 text-truncate" title="{{ $temporaryRegistration->nurse->school_or_university }}">{{ $temporaryRegistration->nurse->school_or_university ?: 'N/A' }}</div>
+                            <div class="col-sm-4 text-muted">Prof. Qual</div>
+                            <div class="col-sm-8 text-truncate">{{ $temporaryRegistration->nurse->professional_qualification ?: 'N/A' }}</div>
                         </div>
                     </div>
                 </div>

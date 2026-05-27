@@ -65,7 +65,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="new_phone" class="form-label fw-bold">Phone</label>
-                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}">
+                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="new_gender" class="form-label fw-bold">Gender</label>
@@ -79,6 +79,16 @@
                                 
                                 <h6 class="border-bottom pb-2 mb-3 text-success mt-4">Temporary Registration Details</h6>
                                 <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="temp_registration_no_modal" class="form-label fw-bold">Temporary Registration No. <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="temp_registration_no_modal" name="temp_registration_no" value="{{ old('temp_registration_no', 'TN ') }}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="temp_registration_date_modal" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="temp_registration_date_modal" name="temp_registration_date" value="{{ old('temp_registration_date', date('Y-m-d')) }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label for="address_modal" class="form-label fw-bold">Address</label>
                                         <textarea class="form-control" id="address_modal" name="address" rows="2">{{ old('address') }}</textarea>
@@ -91,10 +101,24 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="school_university_modal" class="form-label fw-bold">School or University</label>
-                                        <input type="text" class="form-control" id="school_university_modal" name="school_university" value="{{ old('school_university') }}">
+                                        <select class="form-select" id="school_university_modal" name="school_university">
+                                            <option value="">Select School or University</option>
+                                            @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                                <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="professional_qualification_modal" class="form-label fw-bold">Professional Qualification</label>
+                                        <select class="form-select" id="professional_qualification_modal" name="professional_qualification">
+                                            <option value="">Select Qualification</option>
+                                            <option value="Diploma" @selected(old('professional_qualification') == 'Diploma')>Diploma</option>
+                                            <option value="Higher Diploma" @selected(old('professional_qualification') == 'Higher Diploma')>Higher Diploma</option>
+                                            <option value="Bsc" @selected(old('professional_qualification') == 'Bsc')>Bsc</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-6">
                                         <label for="birth_date_modal" class="form-label fw-bold">Birth Date</label>
                                         <input type="date" class="form-control" id="birth_date_modal" name="birth_date" value="{{ old('birth_date') }}">
@@ -151,7 +175,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label for="temp_registration_no" class="form-label fw-bold">Temporary Registration No. <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('temp_registration_no') is-invalid @enderror" id="temp_registration_no" name="temp_registration_no" value="{{ old('temp_registration_no') }}" required>
+                                <input type="text" class="form-control @error('temp_registration_no') is-invalid @enderror" id="temp_registration_no" name="temp_registration_no" value="{{ old('temp_registration_no', 'TN ') }}" required>
                                 @error('temp_registration_no') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
@@ -177,12 +201,27 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="school_university" class="form-label fw-bold">School or University</label>
-                                <input type="text" class="form-control @error('school_university') is-invalid @enderror" id="school_university" name="school_university" value="{{ old('school_university') }}">
+                                <select class="form-select @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
+                                    <option value="">Select School or University</option>
+                                    @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                        <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                    @endforeach
+                                </select>
                                 @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="professional_qualification" class="form-label fw-bold">Professional Qualification</label>
+                                <select class="form-select @error('professional_qualification') is-invalid @enderror" id="professional_qualification" name="professional_qualification">
+                                    <option value="">Select Qualification</option>
+                                    <option value="Diploma" @selected(old('professional_qualification') == 'Diploma')>Diploma</option>
+                                    <option value="Higher Diploma" @selected(old('professional_qualification') == 'Higher Diploma')>Higher Diploma</option>
+                                    <option value="Bsc" @selected(old('professional_qualification') == 'Bsc')>Bsc</option>
+                                </select>
+                                @error('professional_qualification') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
                             <div class="col-md-6">
                                 <label for="birth_date" class="form-label fw-bold">Birth Date</label>
                                 <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}">

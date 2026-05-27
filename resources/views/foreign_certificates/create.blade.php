@@ -14,7 +14,7 @@
             <!-- Step 1: Search Nurse by NIC -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-primary text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Nurse for Foreign Certificate</h5>
+                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Permanent registered Nurse for Foreign Certificate</h5>
                 </div>
                 <div class="card-body p-4 bg-white">
                     <form action="{{ route('foreign-certificates.create') }}" method="GET">

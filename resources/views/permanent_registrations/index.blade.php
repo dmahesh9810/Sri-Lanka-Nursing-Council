@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="bi bi-award-fill text-primary"></i> Permanent Registrations</h2>
         <a href="{{ route('permanent-registrations.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-circle"></i> New Registration
+            <i class="bi bi-plus-circle"></i> New Permanent Registration
         </a>
     </div>
 

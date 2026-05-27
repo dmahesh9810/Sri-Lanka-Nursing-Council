@@ -26,12 +26,6 @@
                                 <button class="nav-link fw-bold text-success" id="perm-reg-tab" data-bs-toggle="tab" data-bs-target="#perm-reg" type="button" role="tab" aria-controls="perm-reg" aria-selected="false"><i class="bi bi-award me-1"></i>Perm. Reg.</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link fw-bold text-secondary" id="qual-tab" data-bs-toggle="tab" data-bs-target="#qual" type="button" role="tab" aria-controls="qual" aria-selected="false"><i class="bi bi-mortarboard me-1"></i>Qualifications</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fw-bold text-warning" id="foreign-tab" data-bs-toggle="tab" data-bs-target="#foreign" type="button" role="tab" aria-controls="foreign" aria-selected="false"><i class="bi bi-globe me-1"></i>Foreign Certs</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
                                 <button class="nav-link fw-bold text-dark" id="qr-tab" data-bs-toggle="tab" data-bs-target="#qr" type="button" role="tab" aria-controls="qr" aria-selected="false"><i class="bi bi-qr-code me-1"></i>QR Code</button>
                             </li>
                         </ul>
@@ -54,7 +48,8 @@
                                     </div>
                                     <div class="col-md-6 border-bottom pb-2">
                                         <div class="text-muted small">Date of Birth</div>
-                                        <div>{{ $nurse->date_of_birth ? \Carbon\Carbon::parse($nurse->date_of_birth)->format('d M Y') : 'N/A' }}</div>
+                                        @php $dob = $nurse->date_of_birth ?: ($nurse->permanentRegistration->birth_date ?? ($nurse->temporaryRegistration->birth_date ?? null)); @endphp
+                                        <div>{{ $dob ? \Carbon\Carbon::parse($dob)->format('d M Y') : 'N/A' }}</div>
                                     </div>
                                     <div class="col-md-6 border-bottom pb-2">
                                         <div class="text-muted small">Phone</div>
@@ -62,11 +57,13 @@
                                     </div>
                                     <div class="col-md-12 border-bottom pb-2">
                                         <div class="text-muted small">Address</div>
-                                        <div>{{ $nurse->address ?: 'N/A' }}</div>
+                                        @php $addr = $nurse->address ?: ($nurse->permanentRegistration->address ?? ($nurse->temporaryRegistration->address ?? null)); @endphp
+                                        <div>{{ $addr ?: 'N/A' }}</div>
                                     </div>
                                     <div class="col-md-6 border-bottom pb-2">
                                         <div class="text-muted small">School / University</div>
-                                        <div>{{ $nurse->school_or_university ?: 'N/A' }}</div>
+                                        @php $sch = $nurse->school_or_university ?: ($nurse->permanentRegistration->school_university ?? ($nurse->temporaryRegistration->school_university ?? null)); @endphp
+                                        <div>{{ $sch ?: 'N/A' }}</div>
                                     </div>
                                     <div class="col-md-6 border-bottom pb-2">
                                         <div class="text-muted small">Batch</div>
@@ -147,85 +144,7 @@
                                 @endif
                             </div>
 
-                            {{-- Tab 4: Additional Qualifications --}}
-                            <div class="tab-pane fade" id="qual" role="tabpanel" aria-labelledby="qual-tab">
-                                @if($nurse->additionalQualifications && $nurse->additionalQualifications->count() > 0)
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Type</th>
-                                                    <th>Number</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($nurse->additionalQualifications as $qual)
-                                                    <tr>
-                                                        <td>{{ $qual->qualification_type }}</td>
-                                                        <td>{{ $qual->qualification_number }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($qual->qualification_date)->format('d M Y') }}</td>
-                                                        <td>
-                                                            @if($qual->certificate_printed)
-                                                                <span class="badge bg-success">Printed</span>
-                                                            @else
-                                                                <span class="badge bg-warning text-dark">Pending</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                @else
-                                    <div class="text-center py-5 text-muted">
-                                        <i class="bi bi-mortarboard fs-1 d-block mb-3"></i>
-                                        No additional qualifications recorded.
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Tab 5: Foreign Certificates --}}
-                            <div class="tab-pane fade" id="foreign" role="tabpanel" aria-labelledby="foreign-tab">
-                                @if($nurse->foreignCertificates && $nurse->foreignCertificates->count() > 0)
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Type</th>
-                                                    <th>Country</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th> 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($nurse->foreignCertificates as $cert)
-                                                    <tr>
-                                                        <td>{{ $cert->certificate_type }}</td>
-                                                        <td>{{ $cert->country }}</td>
-                                                        <td>{{ $cert->issue_date ? \Carbon\Carbon::parse($cert->issue_date)->format('d M Y') : 'N/A' }}</td>
-                                                        <td>
-                                                            @if($cert->certificate_printed)
-                                                                <span class="badge bg-success">Printed</span>
-                                                            @else
-                                                                <span class="badge bg-warning text-dark">Pending</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                @else
-                                    <div class="text-center py-5 text-muted">
-                                        <i class="bi bi-globe fs-1 d-block mb-3"></i>
-                                        No foreign certificates requested.
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Tab 6: QR Code --}}
+                            {{-- Tab 4: QR Code --}}
                             <div class="tab-pane fade" id="qr" role="tabpanel" aria-labelledby="qr-tab">
                                 <div class="text-center py-4">
                                     @php

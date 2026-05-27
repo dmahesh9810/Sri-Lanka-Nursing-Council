@@ -77,7 +77,7 @@ class PermanentRegistrationController extends Controller
             $nurseData = $request->validate([
                 'new_name'              => 'required|string|max:255',
                 'new_nic'               => 'required|string|max:20|unique:nurses,nic',
-                'new_phone'             => 'nullable|string|max:20',
+                'new_phone'             => 'nullable|string|size:10',
                 'new_gender'            => 'nullable|string|max:10',
                 'perm_registration_no'  => 'required|string|max:255|unique:permanent_registrations,perm_registration_no',
                 'perm_registration_date'=> 'required|date',

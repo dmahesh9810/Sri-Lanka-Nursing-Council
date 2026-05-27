@@ -51,6 +51,7 @@ class ReportController extends Controller
             'module'      => 'required|string',
             'period'      => 'required|in:daily,monthly,yearly',
             'report_date' => 'required|date',
+            'format'      => 'nullable|in:pdf,excel',
         ]);
 
         $module = $validated['module'];
@@ -104,7 +105,88 @@ class ReportController extends Controller
 
         $records = $query->get();
 
-        // Step 5 – generate PDF
+        // Step 5 – generate output
+        $format = $validated['format'] ?? 'pdf';
+
+        if ($format === 'excel') {
+            $filename = 'report_' . $module . '_' . $period . '_' . $date->format('Ymd') . '.csv';
+
+            ReportLog::create([
+                'user_id' => $user->id,
+                'module'  => $module,
+                'period'  => $period,
+            ]);
+
+            $headers = [
+                "Content-type"        => "text/csv",
+                "Content-Disposition" => "attachment; filename=$filename",
+                "Pragma"              => "no-cache",
+                "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+                "Expires"             => "0"
+            ];
+
+            $callback = function() use($records, $module) {
+                $file = fopen('php://output', 'w');
+
+                if ($module === 'temporary') {
+                    fputcsv($file, ['Temp Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Grade', 'Workplace']);
+                    foreach ($records as $record) {
+                        fputcsv($file, [
+                            $record->temp_registration_no,
+                            $record->temp_registration_date,
+                            $record->nurse->name ?? '',
+                            $record->nurse->nic ?? '',
+                            $record->nurse->phone ?? '',
+                            $record->grade ?? '',
+                            $record->present_workplace ?? ''
+                        ]);
+                    }
+                } elseif ($module === 'permanent') {
+                    fputcsv($file, ['Perm Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Grade', 'Workplace']);
+                    foreach ($records as $record) {
+                        fputcsv($file, [
+                            $record->perm_registration_no,
+                            $record->perm_registration_date,
+                            $record->nurse->name ?? '',
+                            $record->nurse->nic ?? '',
+                            $record->nurse->phone ?? '',
+                            $record->grade ?? '',
+                            $record->present_workplace ?? ''
+                        ]);
+                    }
+                } elseif ($module === 'qualifications') {
+                    fputcsv($file, ['Qualification Type', 'Qualification No', 'Date', 'Name', 'NIC', 'Phone']);
+                    foreach ($records as $record) {
+                        fputcsv($file, [
+                            $record->qualification_type,
+                            $record->qualification_number,
+                            $record->qualification_date,
+                            $record->nurse->name ?? '',
+                            $record->nurse->nic ?? '',
+                            $record->nurse->phone ?? ''
+                        ]);
+                    }
+                } elseif ($module === 'foreign') {
+                    fputcsv($file, ['Certificate Type', 'Country', 'Date', 'Name', 'NIC', 'Phone']);
+                    foreach ($records as $record) {
+                        fputcsv($file, [
+                            $record->certificate_type,
+                            $record->country,
+                            $record->apply_date,
+                            $record->nurse->name ?? '',
+                            $record->nurse->nic ?? '',
+                            $record->nurse->phone ?? ''
+                        ]);
+                    }
+                }
+
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        }
+
+        // Generate PDF
         $pdf = Pdf::loadView('reports.pdf', compact('records', 'title', 'module'))
             ->setPaper('a4', 'landscape');
 

@@ -14,7 +14,7 @@
             <!-- Step 1: Search Nurse by NIC -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-primary text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Nurse to Add Qualification</h5>
+                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Permanent Registered Nurse to Add Qualification</h5>
                 </div>
                 <div class="card-body p-4 bg-white">
                     <form action="{{ route('additional-qualifications.create') }}" method="GET">
@@ -74,7 +74,12 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="qualification_type" class="form-label fw-bold">Qualification Type <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('qualification_type') is-invalid @enderror" id="qualification_type" name="qualification_type" value="{{ old('qualification_type') }}" placeholder="e.g. Midwifery, ICU Training" required>
+                                <select class="form-select @error('qualification_type') is-invalid @enderror" id="qualification_type" name="qualification_type" required>
+                                    <option value="">Select Qualification Type</option>
+                                    @foreach(['A-Diploma in Teaching & Supervision', 'B-Diploma in Ward Management & Supervision', 'C-Diploma in Public Health', 'D-Intensive Care Nursing', 'E-Operation Theatre Nursing', 'F-Pediatric Nursing', 'G-Emergency Nursing', 'H-Orthopedic Nursing', 'I-Counseling in Nursing', 'J-Stoma Care Nursing', 'K-Renal Nursing', 'L-Psychiatric Nursing', 'M-Gerontological Nursing', 'N-Diabetes Educator Nurse', 'O-Palliative Care Nursing', 'P-Cardio Thoracic Nursing', 'Q-Vascular Nursing', 'R-Midwifery'] as $qualType)
+                                        <option value="{{ $qualType }}" @selected(old('qualification_type') == $qualType)>{{ $qualType }}</option>
+                                    @endforeach
+                                </select>
                                 @error('qualification_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
