@@ -99,11 +99,10 @@
                                             class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none">
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                                    <div class="space-y-2 group">
-                                        <label for="new_phone" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Contact Terminal (Phone)</label>
-                                        <input type="text" name="new_phone" id="new_phone" value="{{ old('new_phone') }}"
-                                            class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="new_phone" class="form-label fw-bold">Phone</label>
+                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
                                     </div>
                                     <div class="space-y-2 group">
                                         <label for="new_gender" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Gender Protocol</label>
@@ -115,41 +114,139 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div>
-                                <h6 class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] mb-6 border-b border-emerald-50 pb-2">Issuance Parameters</h6>
-                                <div class="space-y-2 group">
-                                    <label for="address_modal" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Practice Address</label>
-                                    <textarea name="address" id="address_modal" rows="2"
-                                        class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none resize-none">{{ old('address') }}</textarea>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                                    <div class="space-y-2 group">
-                                        <label for="batch_modal" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Academy Batch</label>
-                                        <input type="text" name="batch" id="batch_modal" value="{{ old('batch') }}"
-                                            class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none">
+                                
+                                <h6 class="border-bottom pb-2 mb-3 text-success mt-4">Temporary Registration Details</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="temp_registration_no_modal" class="form-label fw-bold">Temporary Registration No. <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="temp_registration_no_modal" name="temp_registration_no" value="{{ old('temp_registration_no', 'TN ') }}" required>
                                     </div>
-                                    <div class="space-y-2 group">
-                                        <label for="school_university_modal" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Institution</label>
-                                        <input type="text" name="school_university" id="school_university_modal" value="{{ old('school_university') }}"
-                                            class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none">
+                                    <div class="col-md-6">
+                                        <label for="temp_registration_date_modal" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="temp_registration_date_modal" name="temp_registration_date" value="{{ old('temp_registration_date', date('Y-m-d')) }}" required>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                                    <div class="space-y-2 group">
-                                        <label for="birth_date_modal" class="block text-[10px] font-black text-gray-400 uppercase tracking-widest group-focus-within:text-emerald-600 transition-colors">Canonical Birth Date</label>
-                                        <input type="date" name="birth_date" id="birth_date_modal" value="{{ old('birth_date') }}"
-                                            class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 focus:border-emerald-500 rounded-2xl font-bold text-gray-900 transition-all outline-none">
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="address_modal" class="form-label fw-bold">Address</label>
+                                        <textarea class="form-control" id="address_modal" name="address" rows="2">{{ old('address') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="batch_modal" class="form-label fw-bold">Batch</label>
+                                        <input type="text" class="form-control" id="batch_modal" name="batch" value="{{ old('batch') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="school_university_modal" class="form-label fw-bold">School or University</label>
+                                        <select class="form-select" id="school_university_modal" name="school_university">
+                                            <option value="">Select School or University</option>
+                                            @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                                <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="professional_qualification_modal" class="form-label fw-bold">Professional Qualification</label>
+                                        <select class="form-select" id="professional_qualification_modal" name="professional_qualification">
+                                            <option value="">Select Qualification</option>
+                                            <option value="Diploma" @selected(old('professional_qualification') == 'Diploma')>Diploma</option>
+                                            <option value="Higher Diploma" @selected(old('professional_qualification') == 'Higher Diploma')>Higher Diploma</option>
+                                            <option value="Bsc" @selected(old('professional_qualification') == 'Bsc')>Bsc</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="birth_date_modal" class="form-label fw-bold">Birth Date</label>
+                                        <input type="date" class="form-control" id="birth_date_modal" name="birth_date" value="{{ old('birth_date') }}">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="px-10 py-8 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between">
-                            <button type="button" id="cancelModalBtn" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900 transition-all">Abort Input</button>
-                            <button type="submit" class="px-8 py-4 bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 flex items-center gap-2">
-                                Commit & Issue Protocol <i class="bi bi-chevron-right text-xs"></i>
-                            </button>
+                        <div class="col-md-6 mb-2">
+                            <strong>NIC:</strong> <span class="badge bg-secondary">{{ $nurse->nic }}</span>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Phone:</strong> {{ $nurse->phone ?: 'N/A' }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Batch:</strong> {{ $nurse->batch ?: 'N/A' }}
+                        </div>
+                        <div class="col-12 text-muted small mt-2">
+                            <em><i class="bi bi-building"></i> {{ $nurse->school_or_university ?: 'No School/University Listed' }}</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 bg-white">
+                    <form action="{{ route('temporary-registrations.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="nurse_id" value="{{ $nurse->id }}">
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="temp_registration_no" class="form-label fw-bold">Temporary Registration No. <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('temp_registration_no') is-invalid @enderror" id="temp_registration_no" name="temp_registration_no" value="{{ old('temp_registration_no', 'TN ') }}" required>
+                                @error('temp_registration_no') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="temp_registration_date" class="form-label fw-bold">Registration Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control @error('temp_registration_date') is-invalid @enderror" id="temp_registration_date" name="temp_registration_date" value="{{ old('temp_registration_date', date('Y-m-d')) }}" required>
+                                @error('temp_registration_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="address" class="form-label fw-bold">Address</label>
+                                <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address') }}</textarea>
+                                @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="batch" class="form-label fw-bold">Batch</label>
+                                <input type="text" class="form-control @error('batch') is-invalid @enderror" id="batch" name="batch" value="{{ old('batch') }}">
+                                @error('batch') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="school_university" class="form-label fw-bold">School or University</label>
+                                <select class="form-select @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
+                                    <option value="">Select School or University</option>
+                                    @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                        <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                    @endforeach
+                                </select>
+                                @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="professional_qualification" class="form-label fw-bold">Professional Qualification</label>
+                                <select class="form-select @error('professional_qualification') is-invalid @enderror" id="professional_qualification" name="professional_qualification">
+                                    <option value="">Select Qualification</option>
+                                    <option value="Diploma" @selected(old('professional_qualification') == 'Diploma')>Diploma</option>
+                                    <option value="Higher Diploma" @selected(old('professional_qualification') == 'Higher Diploma')>Higher Diploma</option>
+                                    <option value="Bsc" @selected(old('professional_qualification') == 'Bsc')>Bsc</option>
+                                </select>
+                                @error('professional_qualification') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="birth_date" class="form-label fw-bold">Birth Date</label>
+                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
+                                @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('temporary-registrations.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Registration</button>
                         </div>
                     </form>
                 </div>

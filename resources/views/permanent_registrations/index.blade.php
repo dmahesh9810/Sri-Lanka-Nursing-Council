@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
-            <i class="bi bi-award-fill text-blue-600 mr-3"></i> Permanent Registrations
-        </h2>
-        <a href="{{ route('permanent-registrations.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition duration-200 flex items-center">
-            <i class="bi bi-plus-circle mr-2"></i> New Registration
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-award-fill text-primary"></i> Permanent Registrations</h2>
+        <a href="{{ route('permanent-registrations.create') }}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i> New Permanent Registration
         </a>
     </div>
 

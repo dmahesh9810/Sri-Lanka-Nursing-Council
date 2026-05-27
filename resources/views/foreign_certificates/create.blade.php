@@ -1,13 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 tracking-tight text-gray-900">
-    
-    @if(session('error'))
-        <div class="mb-8 bg-red-50 border-l-4 border-red-500 p-6 rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-4 duration-500">
-            <div class="flex items-center gap-4">
-                <div class="bg-red-500/10 p-2 rounded-xl">
-                    <i class="bi bi-exclamation-triangle-fill text-red-600 text-xl"></i>
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        @if(session('error'))
+            <div class="alert alert-danger shadow-sm mb-4">
+                <i class="bi bi-exclamation-triangle-fill"></i> {{ session('error') }}
+            </div>
+        @endif
+
+        @if(!isset($nurse))
+            <!-- Step 1: Search Nurse by NIC -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Permanent registered Nurse for Foreign Certificate</h5>
                 </div>
                 <div>
                     <h4 class="text-sm font-black text-red-900 uppercase tracking-tighter">System Alert</h4>

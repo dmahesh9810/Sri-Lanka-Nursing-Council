@@ -26,6 +26,13 @@
             Date: {{ \Carbon\Carbon::parse($registration->perm_registration_date)->format('F d, Y') }}
         </div>
 
+        <div style="text-align: right; margin-bottom: 20px;">
+            @php
+                $qrData = "Reg No: {$registration->perm_registration_no}\nName: " . ($registration->nurse->name ?? '') . "\nNIC: " . ($registration->nurse->nic ?? '');
+            @endphp
+            <img src="data:image/svg+xml;base64,{{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(100)->generate($qrData)) }}" width="100" height="100">
+        </div>
+
         <div class="header">
             <h1>Sri Lanka Nursing Council</h1>
             <h2>Permanent Registration Certificate</h2>
@@ -39,16 +46,16 @@
             
             <table style="width: 100%; margin-top: 30px; text-align: left; background: #f9f9f9; padding: 15px;">
                 <tr>
-                    <td style="padding: 5px 0;"><strong>Grade:</strong></td>
-                    <td>{{ $registration->grade ?: 'N/A' }}</td>
+                    <td style="padding: 5px 0;"><strong>Temporary Reg No:</strong></td>
+                    <td>{{ $registration->nurse->temporaryRegistration ? $registration->nurse->temporaryRegistration->temp_registration_no : 'N/A' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px 0;"><strong>Present Workplace:</strong></td>
-                    <td>{{ $registration->present_workplace ?: 'N/A' }}</td>
+                    <td style="padding: 5px 0;"><strong>Temporary Reg Date:</strong></td>
+                    <td>{{ $registration->nurse->temporaryRegistration ? \Carbon\Carbon::parse($registration->nurse->temporaryRegistration->temp_registration_date)->format('F d, Y') : 'N/A' }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px 0;"><strong>SLMC No:</strong></td>
-                    <td>{{ $registration->slmc_no ?: 'N/A' }}</td>
+                    <td style="padding: 5px 0;"><strong>SLMC Date:</strong></td>
+                    <td>{{ $registration->slmc_date ? \Carbon\Carbon::parse($registration->slmc_date)->format('F d, Y') : 'N/A' }}</td>
                 </tr>
             </table>
 

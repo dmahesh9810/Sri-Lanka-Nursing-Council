@@ -63,9 +63,40 @@
                     </div>
                 </div>
             </div>
-            <div class="px-8 py-5 bg-gray-50/30 border-t border-gray-50 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">
-                <span>Sync: {{ $temporaryRegistration->updated_at->format('d M Y') }}</span>
-                <span>ID: #TR{{ str_pad($temporaryRegistration->id, 5, '0', STR_PAD_LEFT) }}</span>
+
+            <div class="col-md-6">
+                <!-- Nurse Profile -->
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-info"><i class="bi bi-person-badge"></i> Associated Nurse</h5>
+                    </div>
+                    <div class="card-body p-4 bg-info bg-opacity-10">
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">Name</div>
+                            <div class="col-sm-8 fw-bold">{{ $temporaryRegistration->nurse->name }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">NIC</div>
+                            <div class="col-sm-8"><span class="badge bg-secondary">{{ $temporaryRegistration->nurse->nic }}</span></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">Phone</div>
+                            <div class="col-sm-8">{{ $temporaryRegistration->nurse->phone ?: 'N/A' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">Batch</div>
+                            <div class="col-sm-8">{{ $temporaryRegistration->nurse->batch ?: ($temporaryRegistration->batch ?: 'N/A') }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4 text-muted">School</div>
+                            <div class="col-sm-8 text-truncate" title="{{ $temporaryRegistration->nurse->school_or_university ?: $temporaryRegistration->school_university }}">{{ $temporaryRegistration->nurse->school_or_university ?: ($temporaryRegistration->school_university ?: 'N/A') }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 text-muted">Prof. Qual</div>
+                            <div class="col-sm-8 text-truncate">{{ $temporaryRegistration->nurse->professional_qualification ?: 'N/A' }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

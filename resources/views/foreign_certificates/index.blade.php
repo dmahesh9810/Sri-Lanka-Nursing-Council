@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
-            <i class="bi bi-globe-americas text-blue-600 mr-3"></i> Foreign Certificates
-        </h2>
-        <a href="{{ route('foreign-certificates.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition duration-200 flex items-center">
-            <i class="bi bi-plus-circle mr-2"></i> New Application
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-globe-americas text-primary"></i> Foreign Certificates</h2>
+        <a href="{{ route('foreign-certificates.create') }}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i> Add New Foreign Certificate
         </a>
     </div>
 

@@ -19,17 +19,60 @@
                     <span class="text-sm font-black bg-blue-500/50 px-3 py-1 rounded-xl border border-blue-300/30 shadow-inner tracking-widest">{{ $additionalQualification->qualification_number }}</span>
                 </div>
             </div>
-        </div>
-        
-        <div class="bg-gray-50 border-b border-gray-100 px-10 py-6 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-                    <i class="bi bi-person-check-fill text-xl"></i>
-                </div>
-                <div>
-                    <h4 class="text-sm font-black uppercase tracking-tighter">{{ $additionalQualification->nurse->name }}</h4>
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">NIC ARCHIVE: {{ $additionalQualification->nurse->nic }}</span>
-                </div>
+
+            <div class="card-body p-4 bg-white">
+                <form action="{{ route('additional-qualifications.update', $additionalQualification) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    
+                    <input type="hidden" name="nurse_id" value="{{ $additionalQualification->nurse_id }}">
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="qualification_type" class="form-label fw-bold">Qualification Type <span class="text-danger">*</span></label>
+                            <select class="form-select @error('qualification_type') is-invalid @enderror" id="qualification_type" name="qualification_type" required>
+                                <option value="">Select Qualification Type</option>
+                                @foreach(['A-Diploma in Teaching & Supervision', 'B-Diploma in Ward Management & Supervision', 'C-Diploma in Public Health', 'D-Intensive Care Nursing', 'E-Operation Theatre Nursing', 'F-Pediatric Nursing', 'G-Emergency Nursing', 'H-Orthopedic Nursing', 'I-Counseling in Nursing', 'J-Stoma Care Nursing', 'K-Renal Nursing', 'L-Psychiatric Nursing', 'M-Gerontological Nursing', 'N-Diabetes Educator Nurse', 'O-Palliative Care Nursing', 'P-Cardio Thoracic Nursing', 'Q-Vascular Nursing', 'R-Midwifery'] as $qualType)
+                                    <option value="{{ $qualType }}" @selected(old('qualification_type', $additionalQualification->qualification_type) == $qualType)>{{ $qualType }}</option>
+                                @endforeach
+                            </select>
+                            @error('qualification_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="qualification_number" class="form-label fw-bold">Qualification Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('qualification_number') is-invalid @enderror" id="qualification_number" name="qualification_number" value="{{ old('qualification_number', $additionalQualification->qualification_number) }}" required>
+                            @error('qualification_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="qualification_date" class="form-label fw-bold">Qualification Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control @error('qualification_date') is-invalid @enderror" id="qualification_date" name="qualification_date" value="{{ old('qualification_date', $additionalQualification->qualification_date) }}" required>
+                            @error('qualification_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 bg-light p-3 rounded-3 mx-0">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="certificate_printed" name="certificate_printed" value="1" {{ old('certificate_printed', $additionalQualification->certificate_printed) ? 'checked' : '' }}>
+                                <label class="form-check-label fw-bold" for="certificate_printed">Certificate Printed</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="certificate_posted" name="certificate_posted" value="1" {{ old('certificate_posted', $additionalQualification->certificate_posted) ? 'checked' : '' }}>
+                                <label class="form-check-label fw-bold" for="certificate_posted">Certificate Posted</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('additional-qualifications.index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update Qualification</button>
+                    </div>
+                </form>
             </div>
             <span class="text-[10px] font-black text-gray-300 uppercase italic">IDENTITY LOCKED</span>
         </div>

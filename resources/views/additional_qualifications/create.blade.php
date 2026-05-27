@@ -1,13 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 tracking-tight text-gray-900">
-    
-    @if(session('error'))
-        <div class="mb-8 bg-red-50 border-l-4 border-red-500 p-6 rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-4 duration-500">
-            <div class="flex items-center gap-4">
-                <div class="bg-red-500/10 p-2 rounded-xl">
-                    <i class="bi bi-exclamation-triangle-fill text-red-600 text-xl"></i>
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        @if(session('error'))
+            <div class="alert alert-danger shadow-sm mb-4">
+                <i class="bi bi-exclamation-triangle-fill"></i> {{ session('error') }}
+            </div>
+        @endif
+
+        @if(!isset($nurse))
+            <!-- Step 1: Search Nurse by NIC -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-search"></i> Find Permanent Registered Nurse to Add Qualification</h5>
                 </div>
                 <div>
                     <h4 class="text-sm font-black text-red-900 uppercase tracking-tighter">System Alert</h4>
@@ -104,13 +111,60 @@
             </div>
         </div>
 
-        <!-- Credential Form -->
-        <div class="bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden">
-            <div class="bg-white px-10 py-8 border-b border-gray-50 flex items-center justify-between">
-                <h5 class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-3 italic">
-                    <i class="bi bi-mortarboard text-blue-600 animate-pulse"></i> Academic Governance
-                </h5>
-                <span class="text-[10px] font-black text-gray-300 uppercase italic">Ledger Append: READY</span>
+            <!-- Application Form -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 bg-white">
+                    <form action="{{ route('additional-qualifications.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="nurse_id" value="{{ $nurse->id }}">
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="qualification_type" class="form-label fw-bold">Qualification Type <span class="text-danger">*</span></label>
+                                <select class="form-select @error('qualification_type') is-invalid @enderror" id="qualification_type" name="qualification_type" required>
+                                    <option value="">Select Qualification Type</option>
+                                    @foreach(['A-Diploma in Teaching & Supervision', 'B-Diploma in Ward Management & Supervision', 'C-Diploma in Public Health', 'D-Intensive Care Nursing', 'E-Operation Theatre Nursing', 'F-Pediatric Nursing', 'G-Emergency Nursing', 'H-Orthopedic Nursing', 'I-Counseling in Nursing', 'J-Stoma Care Nursing', 'K-Renal Nursing', 'L-Psychiatric Nursing', 'M-Gerontological Nursing', 'N-Diabetes Educator Nurse', 'O-Palliative Care Nursing', 'P-Cardio Thoracic Nursing', 'Q-Vascular Nursing', 'R-Midwifery'] as $qualType)
+                                        <option value="{{ $qualType }}" @selected(old('qualification_type') == $qualType)>{{ $qualType }}</option>
+                                    @endforeach
+                                </select>
+                                @error('qualification_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="qualification_number" class="form-label fw-bold">Qualification Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('qualification_number') is-invalid @enderror" id="qualification_number" name="qualification_number" value="{{ old('qualification_number') }}" required>
+                                @error('qualification_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="qualification_date" class="form-label fw-bold">Qualification Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control @error('qualification_date') is-invalid @enderror" id="qualification_date" name="qualification_date" value="{{ old('qualification_date', date('Y-m-d')) }}" required>
+                                @error('qualification_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 bg-light p-3 rounded-3 mx-0">
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="certificate_printed" name="certificate_printed" value="1" {{ old('certificate_printed') ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-bold" for="certificate_printed">Certificate Printed</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="certificate_posted" name="certificate_posted" value="1" {{ old('certificate_posted') ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-bold" for="certificate_posted">Certificate Posted</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('additional-qualifications.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Qualification</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="p-10">
                 <form action="{{ route('additional-qualifications.store') }}" method="POST" class="space-y-12">

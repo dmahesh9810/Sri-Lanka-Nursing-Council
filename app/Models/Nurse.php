@@ -18,6 +18,7 @@ class Nurse extends Model
         'date_of_birth',
         'school_or_university',
         'batch',
+        'professional_qualification',
     ];
 
     public function temporaryRegistration()

@@ -56,13 +56,14 @@ class TemporaryRegistrationController extends Controller
             $nurseData = $request->validate([
                 'new_name' => 'required|string|max:255',
                 'new_nic' => 'required|string|max:20|unique:nurses,nic',
-                'new_phone' => 'nullable|string|max:20',
+                'new_phone' => 'nullable|string|digits:10',
                 'new_gender' => 'nullable|string|max:10',
-                'temp_registration_no' => 'required|string|max:255',
+                'temp_registration_no' => ['required', 'string', 'max:255', 'regex:/^TN /'],
                 'temp_registration_date' => 'required|date',
                 'address' => 'nullable|string|max:500',
                 'batch' => 'nullable|string|max:100',
                 'school_university' => 'nullable|string|max:255',
+                'professional_qualification' => 'nullable|string|max:255',
                 'birth_date' => 'nullable|date',
             ]);
 
@@ -71,6 +72,8 @@ class TemporaryRegistrationController extends Controller
                 'nic' => $nurseData['new_nic'],
                 'phone' => $nurseData['new_phone'],
                 'gender' => $nurseData['new_gender'],
+                'school_or_university' => $nurseData['school_university'],
+                'professional_qualification' => $nurseData['professional_qualification'] ?? null,
             ]);
 
             \App\Models\TemporaryRegistration::create([
@@ -85,7 +88,7 @@ class TemporaryRegistrationController extends Controller
         } else {
             $validated = $request->validate([
                 'nurse_id' => 'required|exists:nurses,id|unique:temporary_registrations,nurse_id',
-                'temp_registration_no' => 'required|string|max:255',
+                'temp_registration_no' => ['required', 'string', 'max:255', 'regex:/^TN /'],
                 'temp_registration_date' => 'required|date',
                 'address' => 'nullable|string|max:500',
                 'batch' => 'nullable|string|max:100',
@@ -126,7 +129,7 @@ class TemporaryRegistrationController extends Controller
     public function update(Request $request, \App\Models\TemporaryRegistration $temporaryRegistration)
     {
         $validated = $request->validate([
-            'temp_registration_no' => 'required|string|max:255',
+            'temp_registration_no' => ['required', 'string', 'max:255', 'regex:/^TN /'],
             'temp_registration_date' => 'required|date',
             'address' => 'nullable|string|max:500',
             'batch' => 'nullable|string|max:100',

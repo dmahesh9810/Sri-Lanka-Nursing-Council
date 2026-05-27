@@ -54,8 +54,22 @@
                             <div class="form-text mt-1 text-muted">For monthly/yearly reports, any date within the target month/year works.</div>
                         </div>
 
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Export Format</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="format" id="format_pdf" value="pdf" checked>
+                                    <label class="form-check-label" for="format_pdf">PDF Document (.pdf)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="format" id="format_excel" value="excel">
+                                    <label class="form-check-label" for="format_excel">Excel / CSV (.csv)</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100 py-2">
-                            <i class="bi bi-file-earmark-pdf"></i> Generate PDF Report
+                            <i class="bi bi-download"></i> Generate Report
                         </button>
                     </form>
                 @endif
