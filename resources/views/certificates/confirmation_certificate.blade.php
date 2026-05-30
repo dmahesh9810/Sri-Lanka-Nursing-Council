@@ -50,7 +50,7 @@
     <div class="org-header">
         <div class="org-emblem">&#9670;</div>
         <div class="org-name">Sri Lanka Nursing Council</div>
-        <div class="org-sub">Ministry of Health &bull; Established under the Nurses Ordinance No. 33 of 1953</div>
+        
     </div>
 
     <div class="cert-title-block">
@@ -65,6 +65,8 @@
         </div>
         <div class="cert-meta-right">
             <strong>Issue Date:</strong> {{ \Carbon\Carbon::parse($cert->issue_date)->format('d F Y') }}
+            <br><br>
+            <img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(70)->generate($cert->certificate_number)) }}" alt="QR Code">
         </div>
     </div>
 
@@ -80,29 +82,63 @@
             <td class="val">{{ strtoupper($cert->nurse->name) }}</td>
         </tr>
         <tr>
-            <td class="lbl">National Identity Card No.</td>
+            <td class="lbl">Permanent Address</td>
             <td class="sep">:</td>
-            <td class="val">{{ $cert->nurse->nic }}</td>
+            <td class="val">{{ $cert->nurse->address }}</td>
         </tr>
         <tr>
-            <td class="lbl">Permanent Registration No.</td>
+            <td class="lbl">SLNC Reg No.</td>
             <td class="sep">:</td>
             <td class="val">{{ optional($cert->nurse->permanentRegistration)->perm_registration_no ?? 'N/A' }}</td>
         </tr>
         <tr>
-            <td class="lbl">Certificate Type</td>
+            <td class="lbl">SLNC Reg Date</td>
             <td class="sep">:</td>
-            <td class="val">{{ $cert->certificate_type }}</td>
+            <td class="val">
+                @if(optional($cert->nurse->permanentRegistration)->perm_registration_date)
+                    {{ \Carbon\Carbon::parse($cert->nurse->permanentRegistration->perm_registration_date)->format('d F Y') }}
+                @else
+                    N/A
+                @endif
+            </td>
         </tr>
+        @if(optional($cert->nurse->permanentRegistration)->slmc_no)
+        <tr>
+            <td class="lbl">SLMC No.</td>
+            <td class="sep">:</td>
+            <td class="val">{{ $cert->nurse->permanentRegistration->slmc_no }}</td>
+        </tr>
+        @endif
+        @if(optional($cert->nurse->permanentRegistration)->slmc_date)
+        <tr>
+            <td class="lbl">SLMC Date</td>
+            <td class="sep">:</td>
+            <td class="val">{{ \Carbon\Carbon::parse($cert->nurse->permanentRegistration->slmc_date)->format('d F Y') }}</td>
+        </tr>
+        @endif
+        @if(optional($cert->nurse->temporaryRegistration)->temp_registration_no)
+        <tr>
+            <td class="lbl">Temp Reg No.</td>
+            <td class="sep">:</td>
+            <td class="val">{{ $cert->nurse->temporaryRegistration->temp_registration_no }}</td>
+        </tr>
+        @endif
+        @if(optional($cert->nurse->temporaryRegistration)->registration_date)
+        <tr>
+            <td class="lbl">Temp Reg Date</td>
+            <td class="sep">:</td>
+            <td class="val">{{ \Carbon\Carbon::parse($cert->nurse->temporaryRegistration->registration_date)->format('d F Y') }}</td>
+        </tr>
+        @endif
         <tr>
             <td class="lbl">Destination Country</td>
             <td class="sep">:</td>
             <td class="val">{{ $cert->country }}</td>
         </tr>
         <tr>
-            <td class="lbl">Date of Application</td>
+            <td class="lbl">Qualification Type</td>
             <td class="sep">:</td>
-            <td class="val">{{ \Carbon\Carbon::parse($cert->apply_date)->format('d F Y') }}</td>
+            <td class="val">{{ $cert->nurse->professional_qualification ?? 'N/A' }}</td>
         </tr>
     </table>
 
@@ -115,18 +151,13 @@
     </div>
 
     <div class="signature-section">
-        <div class="sig-block">
+        <div class="sig-block" style="width: 50%;">
             <div class="sig-line"></div>
             <div class="sig-name">Registrar</div>
             <div class="sig-title">Sri Lanka Nursing Council</div>
         </div>
-        <div class="sig-block">
+        <div class="sig-block" style="width: 50%;">
             <div class="seal-area">Official Seal<br>Sri Lanka Nursing Council</div>
-        </div>
-        <div class="sig-block">
-            <div class="sig-line"></div>
-            <div class="sig-name">Director General of Health</div>
-            <div class="sig-title">Ministry of Health, Sri Lanka</div>
         </div>
     </div>
 
