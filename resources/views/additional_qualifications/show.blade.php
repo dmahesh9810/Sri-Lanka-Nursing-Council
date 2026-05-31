@@ -91,11 +91,11 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4 text-muted">Batch</div>
-                            <div class="col-sm-8">{{ $additionalQualification->nurse->batch ?: 'N/A' }}</div>
+                            <div class="col-sm-8">{{ $additionalQualification->nurse->batch ?: ($additionalQualification->nurse->permanentRegistration->batch ?? ($additionalQualification->nurse->temporaryRegistration->batch ?? 'N/A')) }}</div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4 text-muted">School</div>
-                            <div class="col-sm-8 text-truncate" title="{{ $additionalQualification->nurse->school_or_university }}">{{ $additionalQualification->nurse->school_or_university ?: 'N/A' }}</div>
+                            <div class="col-sm-8 text-truncate" title="{{ $additionalQualification->nurse->school_or_university }}">{{ $additionalQualification->nurse->school_or_university ?: ($additionalQualification->nurse->permanentRegistration->school_university ?? ($additionalQualification->nurse->temporaryRegistration->school_university ?? 'N/A')) }}</div>
                         </div>
                         <hr class="border-info">
                         <div class="row mb-2">

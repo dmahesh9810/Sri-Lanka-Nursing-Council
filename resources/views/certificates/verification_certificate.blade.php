@@ -135,9 +135,10 @@
 
     <!-- Organisation Header -->
     <div class="org-header">
-        <div class="org-emblem">&#9670;</div>
+        <div class="org-name" style="font-size: 16pt;">Democratic Socialist Republic of Sri Lanka</div>
+        <div class="org-name" style="font-size: 14pt; margin-top: 4pt;">Ministry of Health</div>
+        <div class="org-emblem" style="margin: 8pt 0;">&#9670;</div>
         <div class="org-name">Sri Lanka Nursing Council</div>
-        
     </div>
 
     <!-- Certificate Title -->
@@ -153,9 +154,16 @@
             <strong>Certificate No:</strong> {{ $cert->certificate_number }}
         </div>
         <div class="cert-meta-right">
-            <strong>Issue Date:</strong> {{ \Carbon\Carbon::parse($cert->issue_date)->format('d F Y') }}
+            <strong>Issue Date:</strong> {{ \Carbon\Carbon::parse($cert->issue_date ?? now())->format('d F Y') }}
             <br><br>
-            <img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(70)->generate($cert->certificate_number)) }}" alt="QR Code">
+            @php
+                $qrData = "Name: " . strtoupper($cert->nurse->name) . "\n"
+                        . "NIC: " . $cert->nurse->nic . "\n"
+                        . "Address: " . $cert->nurse->address . "\n"
+                        . "SLNC Reg No: " . (optional($cert->nurse->permanentRegistration)->perm_registration_no ?? 'N/A') . "\n"
+                        . "SLNC Reg Date: " . (optional($cert->nurse->permanentRegistration)->perm_registration_date ? \Carbon\Carbon::parse($cert->nurse->permanentRegistration->perm_registration_date)->format('d M Y') : 'N/A');
+            @endphp
+            <img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(70)->generate($qrData)) }}" alt="QR Code">
         </div>
     </div>
 
@@ -243,13 +251,18 @@
 
     <!-- Signatures -->
     <div class="signature-section">
-        <div class="sig-block" style="width: 50%;">
+        <div class="sig-block">
             <div class="sig-line"></div>
             <div class="sig-name">Registrar</div>
             <div class="sig-title">Sri Lanka Nursing Council</div>
         </div>
-        <div class="sig-block" style="width: 50%;">
+        <div class="sig-block">
             <div class="seal-area">Official Seal<br>Sri Lanka Nursing Council</div>
+        </div>
+        <div class="sig-block">
+            <div class="sig-line"></div>
+            <div class="sig-name">Director General of Health</div>
+            <div class="sig-title">Ministry of Health</div>
         </div>
     </div>
 

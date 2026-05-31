@@ -76,7 +76,12 @@
                         </div>
                         <div class="col-md-6">
                             <label for="school_university" class="form-label fw-bold">School or University</label>
-                            <input type="text" class="form-control @error('school_university') is-invalid @enderror" id="school_university" name="school_university" value="{{ old('school_university', $permanentRegistration->school_university) }}">
+                            <select class="form-select select2 @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
+                                <option value="">Select School or University</option>
+                                @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                    <option value="{{ $school }}" @selected(old('school_university', $permanentRegistration->school_university) == $school)>{{ $school }}</option>
+                                @endforeach
+                            </select>
                             @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                     </div>
@@ -94,6 +99,7 @@
                                 <option value="Diploma" @selected(old('qualification', $permanentRegistration->qualification) == 'Diploma')>Diploma</option>
                                 <option value="General Nursing" @selected(old('qualification', $permanentRegistration->qualification) == 'General Nursing')>General Nursing</option>
                                 <option value="BSc Nursing" @selected(old('qualification', $permanentRegistration->qualification) == 'BSc Nursing')>BSc Nursing</option>
+                                <option value="Higher Diploma" @selected(old('qualification', $permanentRegistration->qualification) == 'Higher Diploma')>Higher Diploma</option>
                             </select>
                             @error('qualification') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>

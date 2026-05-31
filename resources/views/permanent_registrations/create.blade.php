@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="school_university_modal" class="form-label fw-bold">School or University</label>
-                                        <select class="form-select" id="school_university_modal" name="school_university">
+                                        <select class="form-select select2" id="school_university_modal" name="school_university">
                                             <option value="">Select School or University</option>
                                             @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
                                                 <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
@@ -142,6 +142,7 @@
                                             <option value="Diploma" @selected(old('qualification') == 'Diploma')>Diploma</option>
                                             <option value="General Nursing" @selected(old('qualification') == 'General Nursing')>General Nursing</option>
                                             <option value="BSc Nursing" @selected(old('qualification') == 'BSc Nursing')>BSc Nursing</option>
+                                            <option value="Higher Diploma" @selected(old('qualification') == 'Higher Diploma')>Higher Diploma</option>
                                         </select>
                                     </div>
                                 </div>
@@ -250,7 +251,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="address" class="form-label fw-bold">Address</label>
-                                <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address') }}</textarea>
+                                <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address', $nurse->temporaryRegistration?->address ?? $nurse->address) }}</textarea>
                                 @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -258,15 +259,16 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="batch" class="form-label fw-bold">Batch</label>
-                                <input type="text" class="form-control @error('batch') is-invalid @enderror" id="batch" name="batch" value="{{ old('batch') }}">
+                                <input type="text" class="form-control @error('batch') is-invalid @enderror" id="batch" name="batch" value="{{ old('batch', $nurse->temporaryRegistration?->batch ?? $nurse->batch) }}">
                                 @error('batch') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="school_university" class="form-label fw-bold">School or University</label>
-                                <select class="form-select @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
+                                <select class="form-select select2 @error('school_university') is-invalid @enderror" id="school_university" name="school_university">
                                     <option value="">Select School or University</option>
+                                    @php $defaultSchool = $nurse->temporaryRegistration?->school_university ?? $nurse->school_or_university; @endphp
                                     @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
-                                        <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
+                                        <option value="{{ $school }}" @selected(old('school_university', $defaultSchool) == $school)>{{ $school }}</option>
                                     @endforeach
                                 </select>
                                 @error('school_university') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -276,7 +278,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="birth_date" class="form-label fw-bold">Birth Date</label>
-                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
+                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date', $nurse->temporaryRegistration?->birth_date ?? $nurse->date_of_birth) }}">
                                 @error('birth_date') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
@@ -286,6 +288,7 @@
                                     <option value="Diploma" @selected(old('qualification') == 'Diploma')>Diploma</option>
                                     <option value="General Nursing" @selected(old('qualification') == 'General Nursing')>General Nursing</option>
                                     <option value="BSc Nursing" @selected(old('qualification') == 'BSc Nursing')>BSc Nursing</option>
+                                    <option value="Higher Diploma" @selected(old('qualification') == 'Higher Diploma')>Higher Diploma</option>
                                 </select>
                                 @error('qualification') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>

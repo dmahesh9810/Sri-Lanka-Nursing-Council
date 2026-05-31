@@ -129,8 +129,16 @@
                                             <div>{{ $nurse->permanentRegistration->grade ?: 'N/A' }}</div>
                                         </div>
                                         <div class="col-md-6 border-bottom pb-2">
-                                            <div class="text-muted small">Foreign Training</div>
-                                            <div>{{ $nurse->permanentRegistration->foreign_training_details ?: 'None' }}</div>
+                                            <div class="text-muted small">Batch</div>
+                                            <div>{{ $nurse->permanentRegistration->batch ?: 'N/A' }}</div>
+                                        </div>
+                                        <div class="col-md-6 border-bottom pb-2">
+                                            <div class="text-muted small">School or University</div>
+                                            <div>{{ $nurse->permanentRegistration->school_university ?: 'N/A' }}</div>
+                                        </div>
+                                        <div class="col-md-6 border-bottom pb-2">
+                                            <div class="text-muted small">Qualification</div>
+                                            <div><span class="badge bg-info text-dark">{{ $nurse->permanentRegistration->qualification ?: 'N/A' }}</span></div>
                                         </div>
                                         <div class="col-md-12">
                                             <a href="{{ route('permanent-registrations.show', $nurse->permanentRegistration) }}" class="btn btn-sm btn-outline-success">View Full Detail</a>

@@ -20,18 +20,21 @@
 <body>
     <div class="certificate-container">
         
-        <div class="cert-number">
-            Cert No: SLNC-PERM-CERT-{{ date('Y') }}-{{ str_pad($registration->id, 4, '0', STR_PAD_LEFT) }}<br>
-            Reg No: {{ $registration->perm_registration_no }}<br>
-            Date: {{ \Carbon\Carbon::parse($registration->perm_registration_date)->format('F d, Y') }}
-        </div>
-
-        <div style="text-align: right; margin-bottom: 20px;">
-            @php
-                $qrData = "Reg No: {$registration->perm_registration_no}\nName: " . ($registration->nurse->name ?? '') . "\nNIC: " . ($registration->nurse->nic ?? '');
-            @endphp
-            <img src="data:image/svg+xml;base64,{{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(100)->generate($qrData)) }}" width="100" height="100">
-        </div>
+        <table style="width: 100%; margin-bottom: 20px;">
+            <tr>
+                <td style="text-align: left; vertical-align: top;">
+                    @php
+                        $qrData = "Reg No: {$registration->perm_registration_no}\nName: " . ($registration->nurse->name ?? '') . "\nNIC: " . ($registration->nurse->nic ?? '');
+                    @endphp
+                    <img src="data:image/svg+xml;base64,{{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(80)->generate($qrData)) }}" width="80" height="80">
+                </td>
+                <td class="cert-number" style="vertical-align: top;">
+                    Cert No: SLNC-PERM-CERT-{{ date('Y') }}-{{ str_pad($registration->id, 4, '0', STR_PAD_LEFT) }}<br>
+                    Permanent Reg No: {{ $registration->perm_registration_no }}<br>
+                    Date: {{ \Carbon\Carbon::parse($registration->perm_registration_date)->format('F d, Y') }}
+                </td>
+            </tr>
+        </table>
 
         <div class="header">
             <h1>Sri Lanka Nursing Council</h1>
@@ -53,10 +56,12 @@
                     <td style="padding: 5px 0;"><strong>Temporary Reg Date:</strong></td>
                     <td>{{ $registration->nurse->temporaryRegistration ? \Carbon\Carbon::parse($registration->nurse->temporaryRegistration->temp_registration_date)->format('F d, Y') : 'N/A' }}</td>
                 </tr>
+                @if(!empty($registration->slmc_date) || !empty($registration->slmc_no))
                 <tr>
                     <td style="padding: 5px 0;"><strong>SLMC Date:</strong></td>
                     <td>{{ $registration->slmc_date ? \Carbon\Carbon::parse($registration->slmc_date)->format('F d, Y') : 'N/A' }}</td>
                 </tr>
+                @endif
             </table>
 
         </div>

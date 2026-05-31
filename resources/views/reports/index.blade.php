@@ -30,28 +30,15 @@
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Report Period</label>
-                            <div class="d-flex gap-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="period" id="period_daily" value="daily" checked>
-                                    <label class="form-check-label" for="period_daily">Daily</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="period" id="period_monthly" value="monthly">
-                                    <label class="form-check-label" for="period_monthly">Monthly</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="period" id="period_yearly" value="yearly">
-                                    <label class="form-check-label" for="period_yearly">Yearly</label>
-                                </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="start_date" class="form-label fw-bold">Start Date</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ date('Y-m-d') }}" required>
                             </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="report_date" class="form-label fw-bold">Select Date Reference</label>
-                            <input type="date" class="form-control" id="report_date" name="report_date" value="{{ date('Y-m-d') }}" required>
-                            <div class="form-text mt-1 text-muted">For monthly/yearly reports, any date within the target month/year works.</div>
+                            <div class="col-md-6">
+                                <label for="end_date" class="form-label fw-bold">End Date</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ date('Y-m-d') }}" required>
+                            </div>
                         </div>
 
                         <div class="mb-4">

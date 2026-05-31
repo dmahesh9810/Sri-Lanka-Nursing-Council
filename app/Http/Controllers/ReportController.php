@@ -48,15 +48,15 @@ class ReportController extends Controller
     {
         // Step 1 – basic format validation
         $validated = $request->validate([
-            'module'      => 'required|string',
-            'period'      => 'required|in:daily,monthly,yearly',
-            'report_date' => 'required|date',
-            'format'      => 'nullable|in:pdf,excel',
+            'module'     => 'required|string',
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+            'format'     => 'nullable|in:pdf,excel',
         ]);
 
-        $module = $validated['module'];
-        $period = $validated['period'];
-        $date   = Carbon::parse($validated['report_date']);
+        $module    = $validated['module'];
+        $startDate = Carbon::parse($validated['start_date'])->startOfDay();
+        $endDate   = Carbon::parse($validated['end_date'])->endOfDay();
 
         // Step 2 – role-level authorization: abort if module not allowed for this user
         $user = auth()->user();
@@ -90,18 +90,9 @@ class ReportController extends Controller
             default => abort(403, 'Invalid report module.'),
         };
 
-        // Step 4 – apply period filter
-        if ($period === 'daily') {
-            $query->whereDate($dateColumn, $date->format('Y-m-d'));
-            $title .= ' - ' . $date->format('F d, Y');
-        } elseif ($period === 'monthly') {
-            $query->whereYear($dateColumn, $date->year)
-                  ->whereMonth($dateColumn, $date->month);
-            $title .= ' - ' . $date->format('F Y');
-        } elseif ($period === 'yearly') {
-            $query->whereYear($dateColumn, $date->year);
-            $title .= ' - ' . $date->format('Y');
-        }
+        // Step 4 – apply date range filter
+        $query->whereBetween($dateColumn, [$startDate, $endDate]);
+        $title .= ' (' . $startDate->format('Y-m-d') . ' to ' . $endDate->format('Y-m-d') . ')';
 
         $records = $query->get();
 
@@ -109,12 +100,12 @@ class ReportController extends Controller
         $format = $validated['format'] ?? 'pdf';
 
         if ($format === 'excel') {
-            $filename = 'report_' . $module . '_' . $period . '_' . $date->format('Ymd') . '.csv';
+            $filename = 'report_' . $module . '_' . $startDate->format('Ymd') . '_to_' . $endDate->format('Ymd') . '.csv';
 
             ReportLog::create([
                 'user_id' => $user->id,
                 'module'  => $module,
-                'period'  => $period,
+                'period'  => 'custom',
             ]);
 
             $headers = [
@@ -129,7 +120,7 @@ class ReportController extends Controller
                 $file = fopen('php://output', 'w');
 
                 if ($module === 'temporary') {
-                    fputcsv($file, ['Temp Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Grade', 'Workplace']);
+                    fputcsv($file, ['Temp Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Address', 'DOB', 'Gender', 'School/University', 'Batch', 'Grade', 'Workplace']);
                     foreach ($records as $record) {
                         fputcsv($file, [
                             $record->temp_registration_no,
@@ -137,12 +128,17 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
+                            $record->nurse->address ?? '',
+                            $record->nurse->date_of_birth ?? '',
+                            $record->nurse->gender ?? '',
+                            $record->nurse->school_or_university ?? '',
+                            $record->nurse->batch ?? '',
                             $record->grade ?? '',
                             $record->present_workplace ?? ''
                         ]);
                     }
                 } elseif ($module === 'permanent') {
-                    fputcsv($file, ['Perm Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Grade', 'Workplace']);
+                    fputcsv($file, ['Perm Reg No', 'Date', 'Name', 'NIC', 'Phone', 'Address', 'DOB', 'Gender', 'School/University', 'Batch', 'SLMC No', 'SLMC Date', 'Grade', 'Workplace']);
                     foreach ($records as $record) {
                         fputcsv($file, [
                             $record->perm_registration_no,
@@ -150,12 +146,19 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
+                            $record->nurse->address ?? '',
+                            $record->nurse->date_of_birth ?? '',
+                            $record->nurse->gender ?? '',
+                            $record->nurse->permanentRegistration->school_university ?? $record->nurse->school_or_university ?? '',
+                            $record->nurse->permanentRegistration->batch ?? $record->nurse->batch ?? '',
+                            $record->slmc_no ?? '',
+                            $record->slmc_date ?? '',
                             $record->grade ?? '',
                             $record->present_workplace ?? ''
                         ]);
                     }
                 } elseif ($module === 'qualifications') {
-                    fputcsv($file, ['Qualification Type', 'Qualification No', 'Date', 'Name', 'NIC', 'Phone']);
+                    fputcsv($file, ['Qualification Type', 'Qualification No', 'Date', 'Name', 'NIC', 'Phone', 'Address']);
                     foreach ($records as $record) {
                         fputcsv($file, [
                             $record->qualification_type,
@@ -163,19 +166,23 @@ class ReportController extends Controller
                             $record->qualification_date,
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
-                            $record->nurse->phone ?? ''
+                            $record->nurse->phone ?? '',
+                            $record->nurse->address ?? ''
                         ]);
                     }
                 } elseif ($module === 'foreign') {
-                    fputcsv($file, ['Certificate Type', 'Country', 'Date', 'Name', 'NIC', 'Phone']);
+                    fputcsv($file, ['Certificate Type', 'Country', 'Date', 'Sealed', 'Printed', 'Name', 'NIC', 'Phone', 'Address']);
                     foreach ($records as $record) {
                         fputcsv($file, [
                             $record->certificate_type,
                             $record->country,
                             $record->apply_date,
+                            $record->certificate_sealed ? 'Yes' : 'No',
+                            $record->certificate_printed ? 'Yes' : 'No',
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
-                            $record->nurse->phone ?? ''
+                            $record->nurse->phone ?? '',
+                            $record->nurse->address ?? ''
                         ]);
                     }
                 }
@@ -194,9 +201,9 @@ class ReportController extends Controller
         ReportLog::create([
             'user_id' => $user->id,
             'module'  => $module,
-            'period'  => $period,
+            'period'  => 'custom',
         ]);
 
-        return $pdf->stream('report_' . $module . '_' . $period . '_' . $date->format('Ymd') . '.pdf');
+        return $pdf->stream('report_' . $module . '_' . $startDate->format('Ymd') . '_to_' . $endDate->format('Ymd') . '.pdf');
     }
 }
