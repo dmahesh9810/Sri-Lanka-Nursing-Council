@@ -163,7 +163,7 @@
                         . "SLNC Reg No: " . (optional($cert->nurse->permanentRegistration)->perm_registration_no ?? 'N/A') . "\n"
                         . "SLNC Reg Date: " . (optional($cert->nurse->permanentRegistration)->perm_registration_date ? \Carbon\Carbon::parse($cert->nurse->permanentRegistration->perm_registration_date)->format('d M Y') : 'N/A');
             @endphp
-            <img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(70)->generate($qrData)) }}" alt="QR Code">
+            <img src="data:image/svg+xml;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(70)->generate($qrData)) }}" alt="QR Code">
         </div>
     </div>
 

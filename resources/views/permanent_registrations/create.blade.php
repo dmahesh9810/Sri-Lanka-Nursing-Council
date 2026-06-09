@@ -65,7 +65,8 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="new_phone" class="form-label fw-bold">Phone</label>
-                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
+                                        <input type="text" class="form-control @error('new_phone') is-invalid @enderror" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
+                                        @error('new_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label for="new_gender" class="form-label fw-bold">Gender</label>
@@ -117,11 +118,26 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="batch_modal" class="form-label fw-bold">Batch</label>
+                                        <label for="batch_modal_nurse" class="form-label fw-bold">Batch (Nurse)</label>
+                                        <input type="text" class="form-control" id="batch_modal_nurse" name="nurse_batch" value="{{ old('nurse_batch') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="school_university_modal_nurse" class="form-label fw-bold">School or University (Nurse)</label>
+                                        <select class="form-select select2" id="school_university_modal_nurse" name="nurse_school_university">
+                                            <option value="">Select School or University</option>
+                                            @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
+                                                <option value="{{ $school }}" @selected(old('nurse_school_university') == $school)>{{ $school }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="batch_modal" class="form-label fw-bold">Batch (Perm. Reg.)</label>
                                         <input type="text" class="form-control" id="batch_modal" name="batch" value="{{ old('batch') }}">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="school_university_modal" class="form-label fw-bold">School or University</label>
+                                        <label for="school_university_modal" class="form-label fw-bold">School or University (Perm. Reg.)</label>
                                         <select class="form-select select2" id="school_university_modal" name="school_university">
                                             <option value="">Select School or University</option>
                                             @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)

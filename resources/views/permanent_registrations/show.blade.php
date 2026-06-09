@@ -114,11 +114,11 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4 text-muted">Batch</div>
-                            <div class="col-sm-8">{{ $permanentRegistration->nurse->batch ?: 'N/A' }}</div>
+                            <div class="col-sm-8">{{ $permanentRegistration->nurse->batch ?: ($permanentRegistration->nurse->permanentRegistration->batch ?? ($permanentRegistration->nurse->temporaryRegistration->batch ?? 'N/A')) }}</div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4 text-muted">School</div>
-                            <div class="col-sm-8 text-truncate" title="{{ $permanentRegistration->nurse->school_or_university }}">{{ $permanentRegistration->nurse->school_or_university ?: 'N/A' }}</div>
+                            <div class="col-sm-8 text-truncate" title="{{ $permanentRegistration->nurse->school_or_university }}">{{ $permanentRegistration->nurse->school_or_university ?: ($permanentRegistration->nurse->permanentRegistration->school_university ?? ($permanentRegistration->nurse->temporaryRegistration->school_university ?? 'N/A')) }}</div>
                         </div>
                         <hr class="border-info">
                         <div class="row">

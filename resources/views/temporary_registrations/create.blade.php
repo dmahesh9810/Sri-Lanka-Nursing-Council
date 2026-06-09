@@ -65,7 +65,8 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="new_phone" class="form-label fw-bold">Phone</label>
-                                        <input type="text" class="form-control" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
+                                        <input type="text" class="form-control @error('new_phone') is-invalid @enderror" id="new_phone" name="new_phone" value="{{ old('new_phone') }}" maxlength="10">
+                                        @error('new_phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label for="new_gender" class="form-label fw-bold">Gender</label>

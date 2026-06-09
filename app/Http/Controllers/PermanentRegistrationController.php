@@ -79,6 +79,8 @@ class PermanentRegistrationController extends Controller
                 'new_nic'               => 'required|string|max:20|unique:nurses,nic',
                 'new_phone'             => 'nullable|string|digits:10',
                 'new_gender'            => 'nullable|string|max:10',
+                'nurse_batch'           => 'nullable|string|max:100',
+                'nurse_school_university' => 'nullable|string|max:255',
                 'perm_registration_no'  => 'required|string|max:255|unique:permanent_registrations,perm_registration_no',
                 'perm_registration_date'=> 'required|date',
                 'appointment_date'      => 'nullable|date',
@@ -98,6 +100,8 @@ class PermanentRegistrationController extends Controller
                 'nic'    => $nurseData['new_nic'],
                 'phone'  => $nurseData['new_phone'] ?? null,
                 'gender' => $nurseData['new_gender'] ?? null,
+                'batch'  => $nurseData['nurse_batch'] ?? null,
+                'school_or_university' => $nurseData['nurse_school_university'] ?? null,
             ]);
 
             \App\Models\PermanentRegistration::create([

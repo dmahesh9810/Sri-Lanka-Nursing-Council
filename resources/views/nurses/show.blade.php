@@ -67,7 +67,8 @@
                                     </div>
                                     <div class="col-md-6 border-bottom pb-2">
                                         <div class="text-muted small">Batch</div>
-                                        <div>{{ $nurse->batch ?: 'N/A' }}</div>
+                                        @php $batch = $nurse->batch ?: ($nurse->permanentRegistration->batch ?? ($nurse->temporaryRegistration->batch ?? null)); @endphp
+                                        <div>{{ $batch ?: 'N/A' }}</div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="text-muted small">Record Created</div>

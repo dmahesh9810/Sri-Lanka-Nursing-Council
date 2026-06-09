@@ -276,19 +276,16 @@
     <div class="card-body">
         <div class="d-flex flex-wrap gap-2">
             <a href="{{ route('nurses.create') }}" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Nurse
-            </a>
-            <a href="{{ route('temporary-registrations.create') }}" class="btn btn-outline-info btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Temp. Registration
+                <i class="bi bi-plus-circle me-1"></i>Add New Temporary nurse
             </a>
             <a href="{{ route('permanent-registrations.create') }}" class="btn btn-outline-success btn-sm">
                 <i class="bi bi-plus-circle me-1"></i>New Perm. Registration
             </a>
             <a href="{{ route('additional-qualifications.create') }}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Qualification
+                <i class="bi bi-plus-circle me-1"></i>New Additional Qualification
             </a>
             <a href="{{ route('foreign-certificates.create') }}" class="btn btn-outline-warning btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>New Certificate Request
+                <i class="bi bi-plus-circle me-1"></i>New Foreign certificate Request
             </a>
         </div>
     </div>
