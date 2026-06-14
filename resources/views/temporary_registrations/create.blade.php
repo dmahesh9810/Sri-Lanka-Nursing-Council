@@ -241,3 +241,14 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if($errors->any() && old('is_new_nurse'))
+            var addNurseModal = new bootstrap.Modal(document.getElementById('addNurseModal'));
+            addNurseModal.show();
+        @endif
+    });
+</script>
+@endsection

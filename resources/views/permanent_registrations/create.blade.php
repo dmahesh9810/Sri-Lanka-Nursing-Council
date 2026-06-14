@@ -116,21 +116,7 @@
                                         <textarea class="form-control" id="address_modal" name="address" rows="2">{{ old('address') }}</textarea>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="batch_modal_nurse" class="form-label fw-bold">Batch (Nurse)</label>
-                                        <input type="text" class="form-control" id="batch_modal_nurse" name="nurse_batch" value="{{ old('nurse_batch') }}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="school_university_modal_nurse" class="form-label fw-bold">School or University (Nurse)</label>
-                                        <select class="form-select select2" id="school_university_modal_nurse" name="nurse_school_university">
-                                            <option value="">Select School or University</option>
-                                            @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
-                                                <option value="{{ $school }}" @selected(old('nurse_school_university') == $school)>{{ $school }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="batch_modal" class="form-label fw-bold">Batch (Perm. Reg.)</label>
@@ -333,4 +319,15 @@
         @endif
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if($errors->any() && old('is_new_nurse'))
+            var addNurseModal = new bootstrap.Modal(document.getElementById('addNurseModal'));
+            addNurseModal.show();
+        @endif
+    });
+</script>
 @endsection

@@ -49,7 +49,7 @@
 
     <div class="org-header">
         <div class="org-emblem">&#9670;</div>
-        <div class="org-name">Sri Lanka Nursing Council</div>
+        <div class="org-name" style="font-size: 20pt;">SRI LANKA NURSING COUNCIL</div>
         
     </div>
 
@@ -66,7 +66,7 @@
         <div class="cert-meta-right">
             <strong>Issue Date:</strong> {{ \Carbon\Carbon::parse($cert->issue_date)->format('d F Y') }}
             <br><br>
-            <img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(70)->generate($cert->certificate_number)) }}" alt="QR Code">
+            <img src="data:image/svg+xml;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(70)->generate($cert->certificate_number)) }}" alt="QR Code">
         </div>
     </div>
 

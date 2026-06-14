@@ -135,10 +135,8 @@
 
     <!-- Organisation Header -->
     <div class="org-header">
-        <div class="org-name" style="font-size: 16pt;">Democratic Socialist Republic of Sri Lanka</div>
-        <div class="org-name" style="font-size: 14pt; margin-top: 4pt;">Ministry of Health</div>
         <div class="org-emblem" style="margin: 8pt 0;">&#9670;</div>
-        <div class="org-name">Sri Lanka Nursing Council</div>
+        <div class="org-name" style="font-size: 20pt;">SRI LANKA NURSING COUNCIL</div>
     </div>
 
     <!-- Certificate Title -->
@@ -260,9 +258,7 @@
             <div class="seal-area">Official Seal<br>Sri Lanka Nursing Council</div>
         </div>
         <div class="sig-block">
-            <div class="sig-line"></div>
-            <div class="sig-name">Director General of Health</div>
-            <div class="sig-title">Ministry of Health</div>
+            <!-- Empty space -->
         </div>
     </div>
 
