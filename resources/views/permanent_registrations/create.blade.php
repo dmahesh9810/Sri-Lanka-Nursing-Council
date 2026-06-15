@@ -329,11 +329,15 @@
             addNurseModal.show();
         @endif
 
-        // Initialize Select2 specifically for the modal dropdown to prevent z-index issues
-        $('#school_university_modal').select2({
-            theme: "classic",
-            width: '100%',
-            dropdownParent: $('#addNurseModal')
+        // Initialize Select2 specifically for the modal dropdown to prevent z-index and hidden width issues
+        $('#addNurseModal').on('shown.bs.modal', function () {
+            if (!$('#school_university_modal').hasClass('select2-hidden-accessible')) {
+                $('#school_university_modal').select2({
+                    theme: "classic",
+                    width: '100%',
+                    dropdownParent: $('#addNurseModal')
+                });
+            }
         });
     });
 </script>
