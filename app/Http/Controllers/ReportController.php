@@ -128,7 +128,7 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
-                            $record->nurse->address ?? '',
+                            $record->address ?: ($record->nurse->address ?? ''),
                             $record->nurse->date_of_birth ?? '',
                             $record->nurse->gender ?? '',
                             $record->nurse->school_or_university ?? '',
@@ -146,7 +146,7 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
-                            $record->nurse->address ?? '',
+                            $record->address ?: ($record->nurse->address ?? ''),
                             $record->nurse->date_of_birth ?? '',
                             $record->nurse->gender ?? '',
                             $record->nurse->permanentRegistration->school_university ?? $record->nurse->school_or_university ?? '',
@@ -167,7 +167,7 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
-                            $record->nurse->address ?? ''
+                            $record->nurse->permanentRegistration->address ?? $record->nurse->temporaryRegistration->address ?? $record->nurse->address ?? ''
                         ]);
                     }
                 } elseif ($module === 'foreign') {
@@ -182,7 +182,7 @@ class ReportController extends Controller
                             $record->nurse->name ?? '',
                             $record->nurse->nic ?? '',
                             $record->nurse->phone ?? '',
-                            $record->nurse->address ?? ''
+                            $record->nurse->permanentRegistration->address ?? $record->nurse->temporaryRegistration->address ?? $record->nurse->address ?? ''
                         ]);
                     }
                 }

@@ -68,7 +68,19 @@
                     <td>{{ $record->nurse->name ?? 'N/A' }}</td>
                     <td>{{ $record->nurse->nic ?? 'N/A' }}</td>
                     <td>{{ $record->nurse->phone ?? '-' }}</td>
-                    <td>{{ $record->nurse->address ?? '-' }}</td>
+                    @php
+                        $address = '-';
+                        if (isset($record->address) && !empty($record->address)) {
+                            $address = $record->address;
+                        } elseif (isset($record->nurse->permanentRegistration->address) && !empty($record->nurse->permanentRegistration->address)) {
+                            $address = $record->nurse->permanentRegistration->address;
+                        } elseif (isset($record->nurse->temporaryRegistration->address) && !empty($record->nurse->temporaryRegistration->address)) {
+                            $address = $record->nurse->temporaryRegistration->address;
+                        } elseif (isset($record->nurse->address) && !empty($record->nurse->address)) {
+                            $address = $record->nurse->address;
+                        }
+                    @endphp
+                    <td>{{ $address }}</td>
                     
                     @if($module === 'temporary')
                         <td>{{ $record->temp_registration_no }}</td>
