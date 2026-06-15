@@ -48,7 +48,6 @@
 <div class="border-inner">
 
     <div class="org-header">
-        <div class="org-emblem">&#9670;</div>
         <div class="org-name" style="font-size: 20pt;">SRI LANKA NURSING COUNCIL</div>
         
     </div>

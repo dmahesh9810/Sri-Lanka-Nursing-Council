@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="school_university_modal" class="form-label fw-bold">School or University (Perm. Reg.)</label>
-                                        <select class="form-select select2" id="school_university_modal" name="school_university">
+                                        <select class="form-select" id="school_university_modal" name="school_university">
                                             <option value="">Select School or University</option>
                                             @foreach(['Sri Jayewardenapura NTS','Kandana NTS','Kalutara NTS','Kandy NTS','Ampara NTS','Galle NTS','Matara NTS','Anuradhapura NTS','Jaffna NTS','Vavuniya NTS','Colombo NTS','Rathnapura NTS','Mulleriyawa NTS','Kurunegala NTS','Badulla NTS','NIHS - Kalutara (Public Health Training Institute) NTS','Hambantota NTS','Anuradhapura (Military) NTS','Batticaloa NTS','Peradeniya University','Sri Jeyawardenapura University','Eastern University','Jaffna University','Ruhuna University','Colombo University','KDU University'] as $school)
                                                 <option value="{{ $school }}" @selected(old('school_university') == $school)>{{ $school }}</option>
@@ -328,6 +328,13 @@
             var addNurseModal = new bootstrap.Modal(document.getElementById('addNurseModal'));
             addNurseModal.show();
         @endif
+
+        // Initialize Select2 specifically for the modal dropdown to prevent z-index issues
+        $('#school_university_modal').select2({
+            theme: "classic",
+            width: '100%',
+            dropdownParent: $('#addNurseModal')
+        });
     });
 </script>
 @endsection

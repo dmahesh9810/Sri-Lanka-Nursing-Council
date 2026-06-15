@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $this->call([
-            ManualQaSeeder::class ,
-        ]);
+        // $this->call([
+        //     ManualQaSeeder::class ,
+        // ]);
     }
 }

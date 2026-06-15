@@ -135,7 +135,6 @@
 
     <!-- Organisation Header -->
     <div class="org-header">
-        <div class="org-emblem" style="margin: 8pt 0;">&#9670;</div>
         <div class="org-name" style="font-size: 20pt;">SRI LANKA NURSING COUNCIL</div>
     </div>
 
