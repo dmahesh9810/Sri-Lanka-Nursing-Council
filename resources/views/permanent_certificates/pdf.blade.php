@@ -49,18 +49,32 @@
             
             <table style="width: 100%; margin-top: 30px; text-align: left; background: #f9f9f9; padding: 15px;">
                 <tr>
-                    <td style="padding: 5px 0;"><strong>Temporary Reg No:</strong></td>
-                    <td>{{ $registration->nurse->temporaryRegistration ? $registration->nurse->temporaryRegistration->temp_registration_no : 'N/A' }}</td>
+                    <td style="padding: 5px 0;"><strong>Permanent Reg No:</strong></td>
+                    <td>{{ $registration->perm_registration_no }}</td>
                 </tr>
                 <tr>
-                    <td style="padding: 5px 0;"><strong>Temporary Reg Date:</strong></td>
-                    <td>{{ $registration->nurse->temporaryRegistration ? \Carbon\Carbon::parse($registration->nurse->temporaryRegistration->temp_registration_date)->format('F d, Y') : 'N/A' }}</td>
+                    <td style="padding: 5px 0;"><strong>Permanent Reg Date:</strong></td>
+                    <td>{{ \Carbon\Carbon::parse($registration->perm_registration_date)->format('F d, Y') }}</td>
                 </tr>
-                @if(!empty($registration->slmc_date) || !empty($registration->slmc_no))
-                <tr>
-                    <td style="padding: 5px 0;"><strong>SLMC Date:</strong></td>
-                    <td>{{ $registration->slmc_date ? \Carbon\Carbon::parse($registration->slmc_date)->format('F d, Y') : 'N/A' }}</td>
-                </tr>
+
+                @if($registration->nurse->temporaryRegistration)
+                    <tr>
+                        <td style="padding: 5px 0;"><strong>Temporary Reg No:</strong></td>
+                        <td>{{ $registration->nurse->temporaryRegistration->temp_registration_no }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0;"><strong>Temporary Reg Date:</strong></td>
+                        <td>{{ \Carbon\Carbon::parse($registration->nurse->temporaryRegistration->temp_registration_date)->format('F d, Y') }}</td>
+                    </tr>
+                @else
+                    <tr>
+                        <td style="padding: 5px 0;"><strong>SLMC No:</strong></td>
+                        <td>{{ $registration->slmc_no ?: 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 0;"><strong>SLMC Date:</strong></td>
+                        <td>{{ $registration->slmc_date ? \Carbon\Carbon::parse($registration->slmc_date)->format('F d, Y') : 'N/A' }}</td>
+                    </tr>
                 @endif
             </table>
 
